@@ -1,0 +1,361 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+public class OnlineShoppingGUI extends JFrame {
+
+    private ArrayList<Product> productList;
+    private JTable productTable;
+    private JTextArea productTextArea;
+
+    private JButton shoppingCartButton;
+
+    private JComboBox<String> productTypeComboBox;
+
+    private JButton addToCartButton;
+
+
+    public OnlineShoppingGUI(ArrayList<Product> productList) {
+        this.productList =productList;
+        setTitle("                       Online Shopping GUI");
+        setSize(800, 700);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // Initialize components
+
+        shoppingCartButton = new JButton("Shopping Cart");
+
+        productTypeComboBox = new JComboBox<>(new String[]{"All", "Electronic", "Clothing"}); // Drop-down menu for product categories
+
+        MyTableModel myTableModel= new MyTableModel(productList);
+        productTable = new JTable(myTableModel);
+        JScrollPane scrollPane=new JScrollPane(productTable);
+
+        //AddToCartButton
+        addToCartButton=new JButton("Add to Shopping Cart");
+        addToCartButton.setBackground(Color.ORANGE);
+
+        productTextArea= new JTextArea();
+
+        // Set up layout of the JFrame
+        setLayout(new FlowLayout());
+
+
+
+        //Set up a new panel
+        JPanel topButtonPanel = new JPanel();
+        topButtonPanel.setPreferredSize(new Dimension(700,75));
+        topButtonPanel.setLayout(new BorderLayout());
+        topButtonPanel.setBackground(Color.LIGHT_GRAY);
+        //topButtonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT,30,30));
+        topButtonPanel.setLayout(new BorderLayout());
+
+        JPanel shoppingCartBtnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));  //For moving right "'Shopping cart' button
+        shoppingCartBtnPanel.add(shoppingCartButton);
+        shoppingCartButton.setBackground(Color.GREEN);
+        topButtonPanel.add(shoppingCartBtnPanel,BorderLayout.NORTH);
+
+        JPanel dropDownPanel = new JPanel();  //For moving center to drop-down menu
+        dropDownPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        dropDownPanel.add(new JLabel("Select Product Category :  "));
+        dropDownPanel.add(productTypeComboBox);
+        topButtonPanel.add(dropDownPanel,BorderLayout.CENTER);
+
+
+
+        JPanel middlePanel= new JPanel();
+        middlePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        scrollPane.setPreferredSize(new Dimension(700,80));
+        middlePanel.setPreferredSize(new Dimension(800,200));
+        //productTable.setPreferredSize(new Dimension(700,100));
+        middlePanel.add(scrollPane);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));  //This is not necessary. Because  FlowLayout is the default layout manager for every JPanel
+        bottomPanel.setPreferredSize(new Dimension(800,300));
+        productTextArea.setPreferredSize(new Dimension(700,250));
+        bottomPanel.add(productTextArea);
+        bottomPanel.add(addToCartButton);
+
+
+
+        MouseHandler mouseHandler= new MouseHandler();
+        shoppingCartButton.addMouseListener(mouseHandler);
+        productTable.addMouseListener(mouseHandler);
+        addToCartButton.addMouseListener(mouseHandler);
+
+
+
+
+
+        add(topButtonPanel);
+        add(middlePanel);
+        add(new JLabel("Select Product Details")); //Making & adding label for 'Select Product Details'
+        add(bottomPanel);
+
+        productTypeComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateTable();
+            }
+        });
+    }
+
+    private void updateTable() {
+        String selectedCategory = (String) productTypeComboBox.getSelectedItem();
+        System.out.println("Selected Category: " + selectedCategory);
+
+        ArrayList<Product> filteredProducts = new ArrayList<>();
+
+        if ("All".equals(selectedCategory)) {
+            filteredProducts.addAll(productList);
+        } else {
+            filteredProducts.addAll(
+                    productList.stream()
+                            .filter(product -> selectedCategory.equals(product.getProductType()))
+                            .collect(Collectors.toList())
+            );
+        }
+
+        MyTableModel newModel = new MyTableModel(filteredProducts);
+        productTable.setModel(newModel);
+    }
+
+
+
+
+//    private void updateTable() {
+//        String selectedCategory = (String) productTypeComboBox.getSelectedItem();
+//        System.out.println("Selected Category: " + selectedCategory);
+//
+//        ArrayList<Product> filteredProducts = new ArrayList<>();
+//
+//        if ("All".equals(selectedCategory)) {
+//            filteredProducts.addAll(productList);
+//        } else {
+//            filteredProducts.addAll(
+//                    productList.stream()
+//                            .filter(product -> selectedCategory.equals(product.getProductType()))
+//                            .collect(Collectors.toList())
+//            );
+//        }
+//
+//        MyTableModel newModel = new MyTableModel(filteredProducts);
+//        productTable.setModel(newModel);
+//
+//        // Set a custom cell renderer to highlight items with less than 3 available
+//        productTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+//            @Override
+//            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+//                Component cellComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+//
+//                // Check if the "Items Available" column is being rendered
+//                if (column == 4 && value instanceof Integer) {
+//                    int itemsAvailable = (int) value;
+//                    if (itemsAvailable < 3) {
+//                        // If less than 3 items available, set the background color to red
+//                        cellComponent.setBackground(Color.RED);
+//                    } else {
+//                        // Otherwise, use the default background color
+//                        cellComponent.setBackground(table.getBackground());
+//                    }
+//                } else {
+//                    // For other columns, use the default background color
+//                    cellComponent.setBackground(table.getBackground());
+//                }
+//
+//                return cellComponent;
+//            }
+//        });
+//    }
+
+
+
+
+
+
+
+
+
+
+
+    private class MouseHandler extends ShoppingCart implements MouseListener, MouseMotionListener{
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+            if (e.getSource()==productTable) {
+                int selectedRow = productTable.getSelectedRow();
+                Product selectedProduct = productList.get(selectedRow);
+
+
+                productTextArea.setText(
+
+                        "\nProduct ID: " + selectedProduct.getProductId() + "\n\n" +
+                                "Category  : " + selectedProduct.getProductType() + "\n\n" +
+                                "Name      : " + selectedProduct.getProductName() + "\n\n" +
+                                //"Size      : " + ((Clothing) selectedProduct).getSize() +"\n\n" +
+                                ((selectedProduct instanceof Clothing) ? "Size           : " + ((Clothing) selectedProduct).getSize() + "\n\n" : "") +
+                                ((selectedProduct instanceof Clothing) ? "Product Color  : " + ((Clothing) selectedProduct).getColor() + "\n\n" : "") +
+                                ((selectedProduct instanceof Electronics) ? "Product Brand  : " + ((Electronics) selectedProduct).getBrand() + "\n\n" : "") +
+                                ((selectedProduct instanceof Electronics) ? "Warranty Period: " + ((Electronics) selectedProduct).getWarrentyPeriod() + "\n\n" : "") +
+                                //"Product Color  : " + ((Clothing) selectedProduct).getColor()+"\n\n" +
+                                "Items Available: " + selectedProduct.getNumberOfAvailableItem() + "\n\n"
+                );
+
+            }
+
+            else if (e.getSource()==shoppingCartButton){
+                shoppingCartButton.setBackground(Color.RED);
+                JFrame newFrame = new JFrame("Shopping Cart");
+                newFrame.setSize(600, 500);
+                newFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                setLayout(new FlowLayout(FlowLayout.CENTER));
+
+                JPanel containerPanel = new JPanel();
+                containerPanel.setLayout(new FlowLayout());
+                containerPanel.setPreferredSize(new Dimension(600,450));
+
+                JPanel panel_1=new JPanel();
+                panel_1.setPreferredSize(new Dimension(500,100));
+                panel_1.setLayout(new FlowLayout(FlowLayout.CENTER,0,20)); //(FlowLayout.CENTER,0,40) was used for making a vertical gap from head
+
+                JPanel panel_2=new JPanel();
+                panel_2.setLayout(new GridLayout(2,2,20,20));
+                panel_2.setPreferredSize(new Dimension(400,75));
+
+                JTextArea cartTextArea = new JTextArea();
+                cartTextArea.setBackground(Color.ORANGE);
+                //cartTextArea.setPreferredSize(new Dimension(50,5));
+                cartTextArea.setEditable(false);
+                cartTextArea.setText(calculateTotalCost());  //  // Update cartTextArea with the total cost
+
+                //JScrollPane cartScrollPane = new JScrollPane(cartTextArea);
+
+
+//                CartItem cart = new ShoppingCart();
+//                cart.setShoppingCartList(getShoppingCartList());
+
+                //cartTextArea.setText(cart.calculateTotalCost() + "\n\n");
+                //cart.printProduct();
+
+                JTable cartTable = new JTable(getTableModel());
+                JScrollPane scrollPane = new JScrollPane(cartTable);
+                scrollPane.setPreferredSize(new Dimension(500,100));
+
+
+                //newFrame.add(cartScrollPane);
+
+                panel_1.add(scrollPane);
+
+//                panel_2.add(new JLabel("Total"));
+//                panel_2.add(cartTextArea);
+//                panel_2.add(new JLabel("First Purchase Discount(10%)"));
+//                panel_2.add(new JLabel("Final Total"));
+
+                JPanel newPanel1=new JPanel();
+                newPanel1.setLayout(new FlowLayout(FlowLayout.TRAILING));
+                //newPanel1.setPreferredSize(new Dimension(20,3));
+                newPanel1.add(new JLabel("Total"));
+
+                JPanel newPanel2=new JPanel();
+                newPanel2.setLayout(new FlowLayout(FlowLayout.LEADING));
+                //newPanel2.setPreferredSize(new Dimension(20,5));
+                newPanel2.add(cartTextArea);
+
+                JPanel newPanel3=new JPanel();
+                newPanel3.setLayout(new FlowLayout(FlowLayout.TRAILING));
+                //newPanel3.setPreferredSize(new Dimension(20,3));
+                newPanel3.add(new JLabel("First Purchase Discount(10%)"));
+
+                JPanel newPanel4=new JPanel();
+                newPanel4.setLayout(new FlowLayout(FlowLayout.LEADING));
+                //newPanel4.setPreferredSize(new Dimension(20,3));
+                newPanel4.add(new JLabel("Final Total"));
+
+                panel_2.add(newPanel1);
+                panel_2.add(newPanel2);
+                panel_2.add(newPanel3 );
+                panel_2.add(newPanel4);
+
+
+
+                containerPanel.add(panel_1);
+                containerPanel.add(panel_2);
+
+                newFrame.add(containerPanel);
+
+
+
+                newFrame.setVisible(true);
+
+
+            }
+
+            else if (e.getSource()==addToCartButton) {
+
+                int selectedRow = productTable.getSelectedRow();
+
+                if (selectedRow>=0){
+                    Product selectedProduct= productList.get(selectedRow); //Create an object
+
+                    addProduct(selectedProduct); //call ShoppingCart method
+                    System.out.println(" The item has been successfully added to the cart");
+                }
+            }
+
+
+            //Table
+
+
+
+
+
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent e) {
+
+        }
+    }
+
+
+
+
+    public void openWestminsterGUI(){
+        // Initialize and display the GUI on the Event Dispatch Thread (EDT)
+        SwingUtilities.invokeLater(() -> {
+            // Set the GUI visibility to true, making it visible to the user
+            //SwingUtilities.invokeLater(() -> {...}: This code ensures that the GUI is constructed and modified on the Event Dispatch Thread (EDT), which is the thread responsible for handling Swing components. It prevents potential thread-safety issues in Swing.
+            setVisible(true);
+        });
+    }
+}

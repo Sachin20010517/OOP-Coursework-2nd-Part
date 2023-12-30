@@ -1,0 +1,5 @@
+E|1001E|Home Theatre|10|30000.0|Samsung|50
+E|1002E|Earbuds|4|5000.0|Hino Teck |4
+C|2001C|Trouser|10|2000.0|M|Black
+C|2002C|Checked shirt|12|2900.0|L|Red
+E|1003E|LED Full HD TV|2|50000.0|Singer|60
