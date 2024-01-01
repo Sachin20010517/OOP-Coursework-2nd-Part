@@ -10,6 +10,7 @@ public class Main {
         System.out.println("\n      ---  Welcome to the Westminster Shopping System  ---");
         Scanner input = new Scanner(System.in);
 
+
         int choice;
         do{
 
@@ -21,6 +22,7 @@ public class Main {
             System.out.println("4) Save in a File ");
             System.out.println("5) Load the file ");
             System.out.println("6) Switch to GUI");
+            System.out.println("6) Switch to GUI for users");
             System.out.println("    0) Quit");
             System.out.println("------------------------------------------------------------------------------------");
             System.out.println();
@@ -63,11 +65,17 @@ public class Main {
 
                 case 5:
                     manager.loadProduct();
+
                     break;
                 case 6:
                     ArrayList<Product> arrayList=manager.runGUI();
                     OnlineShoppingGUI gui_1= new OnlineShoppingGUI(arrayList);
                     gui_1.openWestminsterGUI();
+                    break;
+                case 7:
+                    ArrayList<User> userList = new ArrayList<>(); // List to hold user details
+                    UserAuthenticationGUI userAuthGUI = new UserAuthenticationGUI(userList);
+                    userAuthGUI.setVisible(true);
                     break;
                 case 0:
                     System.out.println("Getting Out of the Online Store. Goodbye!");

@@ -1,26 +1,28 @@
-public class User {
-    private String useName;
+import java.io.Serializable;
+
+public class User implements Serializable {
+    private String userName;
     private String password;
 
     public User(){
 
     }
 
-    public User(String useName, String password) {
-        this.useName = useName;
+    public User(String userName, String password) {
+        this.userName = userName;
         this.password = password;
     }
 
-    public String getUseName() {
-        return useName;
+    public String getUserName() {
+        return userName;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setUseName(String useName) {
-        this.useName = useName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public void setPassword(String password) {
