@@ -15,29 +15,41 @@ public class UserAuthenticationGUI extends JFrame {
     private JButton registerButton;
 
     private boolean authenticated;
+    private ArrayList<Product> products;
 
-    public UserAuthenticationGUI(ArrayList<User> userList) {
+    public UserAuthenticationGUI(ArrayList<User> userList, ArrayList<Product> products) {
+        this.products=products;
         this.userList = userList;
         this.authenticated = false;
 
         loadUserDetails(); // Load user details from the file
 
         setTitle("User Authentication");
-        setSize(500, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         initializeComponents();
 
+        JPanel northPanel=new JPanel(new FlowLayout(FlowLayout.CENTER));
+        northPanel.setPreferredSize(new Dimension(500,100));
+        JLabel label_1=new JLabel();
+        label_1.setText("Welcome to Westminster Shopping Center");
+        label_1.setForeground(new Color(255, 0, 0));
+        label_1.setFont(new Font("Times New Roman",Font.BOLD,30));
+        northPanel.add(label_1);
+
+
         setLayout(new BorderLayout());
-        add(createMainPanel(), BorderLayout.CENTER);
+        add(createContainerPanel(), BorderLayout.CENTER);
+        add(northPanel,BorderLayout.NORTH);
 
         setLocationRelativeTo(null); // Center the JFrame on the screen
         setVisible(true);
     }
 
     private void initializeComponents() {
-        usernameField = new JTextField(15);
-        passwordField = new JPasswordField(15);
+        usernameField = new JTextField(10);
+        passwordField = new JPasswordField(10);
         signInButton = new JButton("Sign In");
         registerButton = new JButton("Register");
 
@@ -56,9 +68,16 @@ public class UserAuthenticationGUI extends JFrame {
         });
     }
 
-    private JPanel createMainPanel() {
+    private JPanel createContainerPanel() {
+
+        JPanel containerPanel=new JPanel();
+        containerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        containerPanel.setPreferredSize(new Dimension(400,200));
+
+
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(3, 2, 10, 10));
+        mainPanel.setPreferredSize(new Dimension(300,200));
+        mainPanel.setLayout(new GridLayout(3, 2, 10, 30));
 
         mainPanel.add(new JLabel("Username:"));
         mainPanel.add(usernameField);
@@ -67,7 +86,11 @@ public class UserAuthenticationGUI extends JFrame {
         mainPanel.add(signInButton);
         mainPanel.add(registerButton);
 
-        return mainPanel;
+        mainPanel.setBackground(Color.GRAY);
+        containerPanel.setBackground(Color.ORANGE);
+        containerPanel.add(mainPanel);
+
+        return containerPanel;
     }
 
     private void signIn() {
@@ -78,7 +101,9 @@ public class UserAuthenticationGUI extends JFrame {
 
         if (user != null && user.getPassword().equals(password)) {
             authenticated = true;
-            openShoppingGUI();
+            //openShoppingGUI();
+            OnlineShoppingGUI gui_1= new OnlineShoppingGUI(products);
+            gui_1.openWestminsterGUI();
         } else {
             JOptionPane.showMessageDialog(this, "Invalid username or password. Please try again.");
         }
@@ -114,13 +139,13 @@ public class UserAuthenticationGUI extends JFrame {
         return null;
     }
 
-    private void openShoppingGUI() {
-        SwingUtilities.invokeLater(() -> {
-            OnlineShoppingGUI shoppingGUI = new OnlineShoppingGUI(new ArrayList<>());
-            shoppingGUI.openWestminsterGUI();
-            dispose();
-        });
-    }
+//    private void openShoppingGUI() {
+//        SwingUtilities.invokeLater(() -> {
+//            OnlineShoppingGUI shoppingGUI = new OnlineShoppingGUI(new ArrayList<>());
+//            shoppingGUI.openWestminsterGUI();
+//            dispose();
+//        });
+//    }
 
     private void loadUserDetails() {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(USER_FILE_PATH))) {
@@ -145,7 +170,7 @@ public class UserAuthenticationGUI extends JFrame {
         return authenticated;
     }
 
-    public static void main(String[] args) {
-        new UserAuthenticationGUI(new ArrayList<>());
-    }
+//    public static void main(String[] args) {
+//        new UserAuthenticationGUI(new ArrayList<>());
+//    }
 }

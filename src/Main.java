@@ -73,8 +73,9 @@ public class Main {
                     gui_1.openWestminsterGUI();
                     break;
                 case 7:
+                    ArrayList<Product> arrayListForShopping=manager.runGUI();
                     ArrayList<User> userList = new ArrayList<>(); // List to hold user details
-                    UserAuthenticationGUI userAuthGUI = new UserAuthenticationGUI(userList);
+                    UserAuthenticationGUI userAuthGUI = new UserAuthenticationGUI(userList,arrayListForShopping);
                     userAuthGUI.setVisible(true);
                     break;
                 case 0:
