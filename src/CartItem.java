@@ -2,9 +2,11 @@ public class CartItem {
     private Product product;
     private int quantity;
 
+
     public CartItem(Product product) {
         this.product = product;
         this.quantity = 1; // Initialize quantity to 1 when adding the product to the cart
+
     }
 
     public Product getProduct() {
@@ -20,12 +22,12 @@ public class CartItem {
             quantity++;
         }
 
-
     }
 
     public double getTotalPrice() {
         return quantity * product.getPrice();
     }
+    
 }
 
 /*Using a separate CartItem class provides a clear structure for handling shopping cart-related

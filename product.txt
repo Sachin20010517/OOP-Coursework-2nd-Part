@@ -1,3 +1,5 @@
-C|2001C|Saree|6|2500.0|Yello|L
+E|1003E|Mouse|10|350.0|Lenavo|4
+C|2003C|Casual Shirts|3|250.0|XL|Green
+C|2001C|Saree|6|2500.0|L|Yello
 E|1003E|Speakers|1|15000.0|Panasonic|60
 E|1002E|Home Theatre|2|30000.0|LG|60

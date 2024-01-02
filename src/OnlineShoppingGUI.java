@@ -219,18 +219,18 @@ public class OnlineShoppingGUI extends JFrame {
                 containerPanel.setPreferredSize(new Dimension(600,450));
 
                 JPanel panel_1=new JPanel();
-                panel_1.setPreferredSize(new Dimension(500,100));
+                panel_1.setPreferredSize(new Dimension(500,150));
                 panel_1.setLayout(new FlowLayout(FlowLayout.CENTER,0,20)); //(FlowLayout.CENTER,0,40) was used for making a vertical gap from head
 
                 JPanel panel_2=new JPanel();
-                panel_2.setLayout(new GridLayout(2,2,20,20));
-                panel_2.setPreferredSize(new Dimension(400,75));
+                panel_2.setLayout(new GridLayout(4,2,20,20));
+                panel_2.setPreferredSize(new Dimension(400,150));
 
                 JTextArea cartTextArea = new JTextArea();
                 cartTextArea.setBackground(Color.ORANGE);
                 //cartTextArea.setPreferredSize(new Dimension(50,5));
                 cartTextArea.setEditable(false);
-                cartTextArea.setText(calculateTotalCost());  //  // Update cartTextArea with the total cost
+                cartTextArea.setText(String.valueOf(calculateTotalCost()));  //  // Update cartTextArea with the total cost
 
                 //JScrollPane cartScrollPane = new JScrollPane(cartTextArea);
 
@@ -272,13 +272,56 @@ public class OnlineShoppingGUI extends JFrame {
 
                 JPanel newPanel4=new JPanel();
                 newPanel4.setLayout(new FlowLayout(FlowLayout.LEADING));
+
+                double totalCost = calculateTotalCost();
+                double discount = totalCost * 0.10; // 10% discount
                 //newPanel4.setPreferredSize(new Dimension(20,3));
-                newPanel4.add(new JLabel("Final Total"));
+                newPanel4.add(new JLabel("-"+discount+"£"));
+
+                JPanel newPanel5=new JPanel();
+                newPanel5.setLayout(new FlowLayout(FlowLayout.TRAILING));
+                //newPanel3.setPreferredSize(new Dimension(20,3));
+                newPanel5.add(new JLabel("Three items in same Category Discount(20%)"));
+
+                JPanel newPanel6=new JPanel();
+                newPanel6.setLayout(new FlowLayout(FlowLayout.LEADING));
+                double three_item_discount=calculateTotalCost() * 0.20;
+                if (getClothingQuantity()>=3 || getElectronicQuantity()>=3){
+                    newPanel6.add(new JLabel("-"+three_item_discount+"£"));
+                }
+                else {
+                    newPanel6.add(new JLabel("-"+0+"£"));
+                }
+
+
+                JPanel newPanel7=new JPanel();
+                newPanel7.setLayout(new FlowLayout(FlowLayout.TRAILING));
+                //newPanel3.setPreferredSize(new Dimension(20,3));
+                newPanel7.add(new JLabel("Total"));
+
+                JPanel newPanel8=new JPanel();
+                double total_1= calculateTotalCost()-three_item_discount-discount;
+                double total_2=calculateTotalCost()-discount;
+                newPanel8.setLayout(new FlowLayout(FlowLayout.LEADING));
+                if (getClothingQuantity()>=3 || getElectronicQuantity()>=3){
+                    newPanel8.add(new JLabel(total_1+"£"));
+                }
+                else {
+                    newPanel8.add(new JLabel(total_2+"£"));
+
+                }
+
+
+
 
                 panel_2.add(newPanel1);
                 panel_2.add(newPanel2);
                 panel_2.add(newPanel3 );
                 panel_2.add(newPanel4);
+                panel_2.add(newPanel5);
+                panel_2.add(newPanel6);
+                panel_2.add(newPanel7);
+                panel_2.add(newPanel8);
 
 
 

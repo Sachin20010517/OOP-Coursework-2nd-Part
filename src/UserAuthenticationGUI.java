@@ -53,6 +53,7 @@ public class UserAuthenticationGUI extends JFrame {
         signInButton = new JButton("Sign In");
         registerButton = new JButton("Register");
 
+        // Add ActionListeners to the buttons to handle button click events
         signInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

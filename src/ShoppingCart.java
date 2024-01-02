@@ -26,13 +26,13 @@ public class ShoppingCart {
         this.shoppingCartList.remove(_product);
     }
 
-    public String calculateTotalCost(){
+    public double calculateTotalCost(){
         double totalCost  =0;
 
         for (CartItem _product: shoppingCartList){
             totalCost+=_product.getTotalPrice();
         }
-        return "Total Cost is "+totalCost;
+        return totalCost;
     }
 
 //    public void setShoppingCartList(ArrayList<Product> shoppingCartList) {
@@ -45,6 +45,32 @@ public class ShoppingCart {
 
     public ArrayList<CartItem> getCartItems() {
         return shoppingCartList;
+    }
+
+    public int getElectronicQuantity() {
+        int electronicQuantity = 0;
+        for (CartItem item : shoppingCartList) {
+//            if ("Electronic".equals(item.getProduct().getProductType())) {
+//                electronicQuantity += item.getQuantity();
+//            }
+            if (item.getProduct().getProductType().equals("Electronic")){
+                electronicQuantity += item.getQuantity();
+            }
+        }
+        return electronicQuantity;
+    }
+
+    public int getClothingQuantity() {
+        int clothingQuantity = 0;
+        for (CartItem item : shoppingCartList) {
+//            if ("Clothing".equals(item.getProduct().getProductType())) {
+//                clothingQuantity += item.getQuantity();
+//            }
+            if (item.getProduct().getProductType().equals("Clothing")){
+                clothingQuantity += item.getQuantity();
+            }
+        }
+        return clothingQuantity;
     }
 
 
