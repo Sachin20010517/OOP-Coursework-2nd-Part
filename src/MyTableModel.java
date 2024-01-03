@@ -1,5 +1,7 @@
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MyTableModel extends    AbstractTableModel{
     private String[] columnNames={"Product ID", "Name" , "Category", "Price($)", "Info"};
@@ -65,4 +67,11 @@ public class MyTableModel extends    AbstractTableModel{
             return String.class;
         }
     }
+
+    public void sortByProductId() {
+        Collections.sort(productList, Comparator.comparing(Product::getProductId));
+        fireTableDataChanged();
+    }
+
+
 }

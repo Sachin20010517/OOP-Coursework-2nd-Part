@@ -15,6 +15,7 @@ public class OnlineShoppingGUI extends JFrame {
     private JComboBox<String> productTypeComboBox;
 
     private JButton addToCartButton;
+    private JButton sortButton;
 
 
     public OnlineShoppingGUI(ArrayList<Product> productList) {
@@ -38,6 +39,10 @@ public class OnlineShoppingGUI extends JFrame {
         addToCartButton.setBackground(Color.ORANGE);
 
         productTextArea= new JTextArea();
+
+        //Sort Button
+        sortButton = new JButton("Sort by Product Id");
+        sortButton.setBackground(Color.gray);
 
         // Set up layout of the JFrame
         setLayout(new FlowLayout());
@@ -68,9 +73,17 @@ public class OnlineShoppingGUI extends JFrame {
         JPanel middlePanel= new JPanel();
         middlePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         scrollPane.setPreferredSize(new Dimension(700,80));
-        middlePanel.setPreferredSize(new Dimension(800,200));
+        middlePanel.setPreferredSize(new Dimension(800,100));
         //productTable.setPreferredSize(new Dimension(700,100));
         middlePanel.add(scrollPane);
+
+
+        JPanel sortBtnPanel = new JPanel(new BorderLayout());
+        sortBtnPanel.setPreferredSize(new Dimension(700,30));
+        sortBtnPanel.add(sortButton,BorderLayout.WEST);
+
+
+
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));  //This is not necessary. Because  FlowLayout is the default layout manager for every JPanel
@@ -85,6 +98,7 @@ public class OnlineShoppingGUI extends JFrame {
         shoppingCartButton.addMouseListener(mouseHandler);
         productTable.addMouseListener(mouseHandler);
         addToCartButton.addMouseListener(mouseHandler);
+        sortButton.addMouseListener(mouseHandler);
 
 
 
@@ -92,6 +106,7 @@ public class OnlineShoppingGUI extends JFrame {
 
         add(topButtonPanel);
         add(middlePanel);
+        add(sortBtnPanel);
         add(new JLabel("Select Product Details")); //Making & adding label for 'Select Product Details'
         add(bottomPanel);
 
@@ -122,6 +137,12 @@ public class OnlineShoppingGUI extends JFrame {
         MyTableModel newModel = new MyTableModel(filteredProducts);
         productTable.setModel(newModel);
     }
+
+    private void sortTableByProductId() {
+        MyTableModel model = (MyTableModel) productTable.getModel();
+        model.sortByProductId();
+    }
+
 
 
 
@@ -347,6 +368,9 @@ public class OnlineShoppingGUI extends JFrame {
                     addProduct(selectedProduct); //call ShoppingCart method
                     System.out.println(" The item has been successfully added to the cart");
                 }
+            }
+            else if (e.getSource()==sortButton){
+                 sortTableByProductId();
             }
 
 
