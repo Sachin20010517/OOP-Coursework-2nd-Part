@@ -81,6 +81,8 @@ public class WestminsterShoppingManager implements ShoppingManager{
             }
         }
 
+        //Reference : https://stackoverflow.com/questions/2839137/how-to-use-comparator-in-java-to-sort
+
 
     }
 

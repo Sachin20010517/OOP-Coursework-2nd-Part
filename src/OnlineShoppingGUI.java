@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -136,6 +137,33 @@ public class OnlineShoppingGUI extends JFrame {
 
         MyTableModel newModel = new MyTableModel(filteredProducts);
         productTable.setModel(newModel);
+
+        // Set a custom cell renderer to highlight items with less than 3 available
+        productTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component cellComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                // Check if the "Items Available" column is being rendered
+                if (column == 4 && value instanceof String) {
+                    String itemsAvailableString = (String) value;
+                    int itemsAvailable = Integer.parseInt(itemsAvailableString);
+
+                    if (itemsAvailable < 3) {
+                        // If less than 3 items available, set the background color to red
+                        cellComponent.setBackground(Color.RED);
+                    } else {
+                        // Otherwise, use the default background color
+                        cellComponent.setBackground(table.getBackground());
+                    }
+                } else {
+                    // For other columns, use the default background color
+                    cellComponent.setBackground(table.getBackground());
+                }
+
+                return cellComponent;
+            }
+        });
     }
 
     private void sortTableByProductId() {
