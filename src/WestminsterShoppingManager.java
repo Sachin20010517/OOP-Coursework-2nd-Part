@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 
@@ -56,15 +57,28 @@ public class WestminsterShoppingManager implements ShoppingManager{
 
 
     public void printProduct() {
-        if (product_arrayList.isEmpty()){
+//        if (product_arrayList.isEmpty()){
+//            System.out.println("\nThe store is completely empty!!!.\n");
+//        }
+//        else{
+//            System.out.println("          List of Products:\n");
+//            for (Product product : product_arrayList) {
+//                displayProductInfo(product);
+//            }
+//
+//        }
+        if (product_arrayList.isEmpty()) {   // Check if the product list is empty
             System.out.println("\nThe store is completely empty!!!.\n");
-        }
-        else{
-            System.out.println("          List of Products:\n");
+        } else {
+            // Sort the product_arrayList alphabetically by product ID
+            product_arrayList.sort(Comparator.comparing(Product::getProductId));
+
+            System.out.println("          List of Products (Sorted by Product ID):\n");
+
+            // Iterate through the sorted product list and display product details
             for (Product product : product_arrayList) {
                 displayProductInfo(product);
             }
-
         }
 
 
