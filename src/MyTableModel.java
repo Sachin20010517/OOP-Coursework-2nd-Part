@@ -22,7 +22,7 @@ public class MyTableModel extends    AbstractTableModel{
         return columnNames.length;
     }
 
-
+//    @Override
 //    public Object getValueAt(int rowIndex, int columnIndex) {
 //        if (columnIndex==0){
 //            return productList.get(rowIndex).getProductId();
@@ -51,6 +51,8 @@ public class MyTableModel extends    AbstractTableModel{
 //        }
 //
 //    }
+
+
 @Override
 public Object getValueAt(int rowIndex, int columnIndex) {
     if (columnIndex == 0) {
@@ -79,8 +81,6 @@ public Object getValueAt(int rowIndex, int columnIndex) {
         else {
                 return ((Clothing) productList.get(rowIndex)).getSize()+ ", "+ ((Clothing) productList.get(rowIndex)).getColor();
         }
-            //return productList.get(rowIndex).getNumberOfAvailableItem();
-//        return productList.get(rowIndex).getNumberOfAvailableItem();
     } else {
         return null;
     }

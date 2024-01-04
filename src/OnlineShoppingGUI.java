@@ -138,7 +138,7 @@ public class OnlineShoppingGUI extends JFrame {
         MyTableModel newModel = new MyTableModel(filteredProducts);
         productTable.setModel(newModel);
 
-        // Set a custom cell renderer to highlight items with less than 3 available
+         //Set a custom cell renderer to highlight items with less than 3 available
         productTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -172,90 +172,42 @@ public class OnlineShoppingGUI extends JFrame {
     }
 
 
-
-
-
-//    private void updateTable() {
-//        String selectedCategory = (String) productTypeComboBox.getSelectedItem();
-//        System.out.println("Selected Category: " + selectedCategory);
-//
-//        ArrayList<Product> filteredProducts = new ArrayList<>();
-//
-//        if ("All".equals(selectedCategory)) {
-//            filteredProducts.addAll(productList);
-//        } else {
-//            filteredProducts.addAll(
-//                    productList.stream()
-//                            .filter(product -> selectedCategory.equals(product.getProductType()))
-//                            .collect(Collectors.toList())
-//            );
-//        }
-//
-//        MyTableModel newModel = new MyTableModel(filteredProducts);
-//        productTable.setModel(newModel);
-//
-//        // Set a custom cell renderer to highlight items with less than 3 available
-//        productTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-//            @Override
-//            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-//                Component cellComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-//
-//                // Check if the "Items Available" column is being rendered
-//                if (column == 4 && value instanceof Integer) {
-//                    int itemsAvailable = (int) value;
-//                    if (itemsAvailable < 3) {
-//                        // If less than 3 items available, set the background color to red
-//                        cellComponent.setBackground(Color.RED);
-//                    } else {
-//                        // Otherwise, use the default background color
-//                        cellComponent.setBackground(table.getBackground());
-//                    }
-//                } else {
-//                    // For other columns, use the default background color
-//                    cellComponent.setBackground(table.getBackground());
-//                }
-//
-//                return cellComponent;
-//            }
-//        });
-//    }
-
-
-
-
-
-
-
-
-
-
-
     private class MouseHandler extends ShoppingCart implements MouseListener, MouseMotionListener{
 
         @Override
         public void mouseClicked(MouseEvent e) {
 
-            if (e.getSource()==productTable) {
+            if (e.getSource() == productTable) {
                 int selectedRow = productTable.getSelectedRow();
-                Product selectedProduct = productList.get(selectedRow);
+                Product selectedProduct;
 
+                // Check the selected category in the combo box
+                String selectedCategory = (String) productTypeComboBox.getSelectedItem();
 
+                if ("All".equals(selectedCategory)) {
+                    selectedProduct = productList.get(selectedRow);
+                } else {
+                    // Filter the list based on the selected category
+                    ArrayList<Product> filteredList = (ArrayList<Product>) productList.stream()
+                            .filter(product -> selectedCategory.equals(product.getProductType()))
+                            .collect(Collectors.toList());
+
+                    selectedProduct = filteredList.get(selectedRow);
+                }
+
+                // Display details in productTextArea
                 productTextArea.setText(
-
                         "\nProduct ID: " + selectedProduct.getProductId() + "\n\n" +
                                 "Category  : " + selectedProduct.getProductType() + "\n\n" +
                                 "Name      : " + selectedProduct.getProductName() + "\n\n" +
-                                //"Size      : " + ((Clothing) selectedProduct).getSize() +"\n\n" +
                                 ((selectedProduct instanceof Clothing) ? "Size           : " + ((Clothing) selectedProduct).getSize() + "\n\n" : "") +
                                 ((selectedProduct instanceof Clothing) ? "Product Color  : " + ((Clothing) selectedProduct).getColor() + "\n\n" : "") +
                                 ((selectedProduct instanceof Electronics) ? "Product Brand  : " + ((Electronics) selectedProduct).getBrand() + "\n\n" : "") +
                                 ((selectedProduct instanceof Electronics) ? "Warranty Period: " + ((Electronics) selectedProduct).getWarrentyPeriod() + "\n\n" : "") +
-                                //"Product Color  : " + ((Clothing) selectedProduct).getColor()+"\n\n" +
                                 "Items Available: " + selectedProduct.getNumberOfAvailableItem() + "\n\n"
                 );
 
             }
-
             else if (e.getSource()==shoppingCartButton){
                 shoppingCartButton.setBackground(Color.RED);
                 JFrame newFrame = new JFrame("Shopping Cart");
