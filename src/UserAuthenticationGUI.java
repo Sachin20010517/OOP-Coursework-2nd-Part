@@ -51,7 +51,11 @@ public class UserAuthenticationGUI extends JFrame {
         usernameField = new JTextField(10);
         passwordField = new JPasswordField(10);
         signInButton = new JButton("Sign In");
+        signInButton.setBackground(Color.lightGray);
+        signInButton.setFont(new Font("Times New Roman",Font.BOLD,20));
         registerButton = new JButton("Register");
+        registerButton.setBackground(Color.lightGray);
+        registerButton.setFont(new Font("Times New Roman",Font.BOLD,20));
 
         // Add ActionListeners to the buttons to handle button click events
         signInButton.addActionListener(new ActionListener() {
@@ -80,12 +84,19 @@ public class UserAuthenticationGUI extends JFrame {
         mainPanel.setPreferredSize(new Dimension(400,250));
         mainPanel.setLayout(new GridLayout(3, 2, 10, 30));
 
+        JPanel signInPanel=new JPanel();
+        signInPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        signInPanel.add(signInButton);
+
+        JPanel registerPanel= new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        registerPanel.add(registerButton);
+
         mainPanel.add(new JLabel("Username:"));
         mainPanel.add(usernameField);
         mainPanel.add(new JLabel("Password:"));
         mainPanel.add(passwordField);
-        mainPanel.add(signInButton);
-        mainPanel.add(registerButton);
+        mainPanel.add(signInPanel);
+        mainPanel.add(registerPanel);
 
         mainPanel.setBackground(Color.GRAY);
         containerPanel.setBackground(Color.ORANGE);
@@ -104,6 +115,10 @@ public class UserAuthenticationGUI extends JFrame {
 
         // Check if the user exists and the password matches
         if (user != null && user.getPassword().equals(password)) {
+            if (user.getPurchaseHistory().isEmpty()) {
+                // Apply 10% discount for the first purchase
+                applyFirstPurchaseDiscount(user);
+            }
             authenticated = true;
             //openShoppingGUI();
             OnlineShoppingGUI gui_1= new OnlineShoppingGUI(products);
@@ -175,17 +190,85 @@ public class UserAuthenticationGUI extends JFrame {
 //        }
 //    }
 
+//    private void loadUserDetails() {
+//        try (BufferedReader reader = new BufferedReader(new FileReader(USER_FILE_PATH))) {
+//            userList.clear(); // Clear existing user list
+//            String line;
+//            while ((line = reader.readLine()) != null) { // Read each line from the file
+//                String[] parts = line.split(",");
+//                if (parts.length == 2) {  // Ensure each line has the expected format (username,password)
+//                    String username = parts[0];
+//                    String password = parts[1];
+//                    // Create a User object and add it to the userList
+//                    userList.add(new User(username, password));
+//                }
+//            }
+//        } catch (FileNotFoundException e) {  // If the file is not found, it means no users are registered yet.
+//            System.out.println("User details file not found. Creating a new file.");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+//    private void saveUserDetails() {
+//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_FILE_PATH))) {
+//            // Write each user's details to a new line in the file
+//            for (User user : userList) {
+//                writer.write(user.getUserName() + "," + user.getPassword());
+//                writer.newLine(); // Move to the next line for the next user
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//private void saveUserDetails() {
+//    try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_FILE_PATH))) {
+//        // Write each user's details to a new line in the file
+//        for (User user : userList) {
+//            writer.write(user.getUserName() + "," + user.getPassword() + "," + user.isFirstPurchase());
+//
+//            // If user has a purchase history, append it to the line
+//            if (!user.getPurchaseHistory().isEmpty()) {
+//                writer.write(",[");
+//                for (Product product : user.getPurchaseHistory()) {
+//                    writer.write(product.getProductId() + ",");
+//                }
+//                writer.write("]");
+//            }
+//
+//            writer.newLine(); // Move to the next line for the next user
+//        }
+//    } catch (IOException e) {
+//        e.printStackTrace();
+//    }
+//}
+
+    private void saveUserDetails() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_FILE_PATH))) {
+            // Write each user's details to a new line in the file
+            for (User user : userList) {
+                writer.write(user.getUserName() + "," + user.getPassword() + "," + user.isFirstPurchase());
+                writer.newLine(); // Move to the next line for the next user
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadUserDetails() {
         try (BufferedReader reader = new BufferedReader(new FileReader(USER_FILE_PATH))) {
             userList.clear(); // Clear existing user list
             String line;
             while ((line = reader.readLine()) != null) { // Read each line from the file
                 String[] parts = line.split(",");
-                if (parts.length == 2) {  // Ensure each line has the expected format (username,password)
+                if (parts.length == 3) {  // Ensure each line has the expected format (username,password,isFirstPurchase)
                     String username = parts[0];
                     String password = parts[1];
+                    boolean isFirstPurchase = Boolean.parseBoolean(parts[2]);
                     // Create a User object and add it to the userList
-                    userList.add(new User(username, password));
+                    User user = new User(username, password);
+                    user.setFirstPurchase(isFirstPurchase);
+                    userList.add(user);
                 }
             }
         } catch (FileNotFoundException e) {  // If the file is not found, it means no users are registered yet.
@@ -195,16 +278,53 @@ public class UserAuthenticationGUI extends JFrame {
         }
     }
 
-    private void saveUserDetails() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_FILE_PATH))) {
-            // Write each user's details to a new line in the file
-            for (User user : userList) {
-                writer.write(user.getUserName() + "," + user.getPassword());
-                writer.newLine(); // Move to the next line for the next user
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+
+
+//    private void applyFirstPurchaseDiscount(User user) {29
+//        if (user.isFirstPurchase()) {
+//            double totalCost = calculateTotalCost(); // Replace with your logic to calculate the total cost
+//            double discount = totalCost * 0.10; // 10% discount
+//            // Update the total cost or shopping cart with the discount
+//            // ...
+//
+//            JOptionPane.showMessageDialog(this, "Congratulations! You've received a 10% discount on your first purchase.");
+//
+//            // Add the purchased products to the user's purchase history
+//            user.getPurchaseHistory().addAll(products);
+//
+//            // Update user's first purchase status
+//            user.setFirstPurchase(false);
+//            saveUserDetails();
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Welcome back! You've already received the first purchase discount.");
+//        }
+//    }
+
+    private void applyFirstPurchaseDiscount(User user) {
+        if (user.isFirstPurchase()) {
+            double totalCost = calculateTotalCost(); // Replace with your logic to calculate the total cost
+            double discount = totalCost * 0.10; // 10% discount
+            // Update the total cost or shopping cart with the discount
+            // ...
+
+            JOptionPane.showMessageDialog(this, "Congratulations! You've received a 10% discount on your first purchase.");
+
+            // Add the purchased products to the user's purchase history
+            user.addPurchaseToHistory(products);
+
+            // Update user's first purchase status
+            user.setFirstPurchase(false);
+            saveUserDetails();
+        } else {
+            JOptionPane.showMessageDialog(this, "Welcome back! You've already received the first purchase discount.");
         }
+    }
+
+
+    private double calculateTotalCost() {
+        // Replace with your logic to calculate the total cost
+        return 0.0; // Placeholder value, update with your calculation
     }
 
 

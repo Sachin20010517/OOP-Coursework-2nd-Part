@@ -120,14 +120,19 @@ public class OnlineShoppingGUI extends JFrame {
     }
 
     private void updateTable() {
+        // Get the selected category from the combo box
         String selectedCategory = (String) productTypeComboBox.getSelectedItem();
         System.out.println("Selected Category: " + selectedCategory);
 
+        // Create a list to store filtered products based on the selected category
         ArrayList<Product> filteredProducts = new ArrayList<>();
 
+        // If "All" is selected, add all products to the filtered list
         if ("All".equals(selectedCategory)) {
             filteredProducts.addAll(productList);
-        } else {
+        }
+        else {
+            // Filter the products based on the selected category
             filteredProducts.addAll(
                     productList.stream()
                             .filter(product -> selectedCategory.equals(product.getProductType()))
@@ -135,10 +140,11 @@ public class OnlineShoppingGUI extends JFrame {
             );
         }
 
+        // Create a new table model with the filtered products and set it to the product table
         MyTableModel newModel = new MyTableModel(filteredProducts);
         productTable.setModel(newModel);
 
-         //Set a custom cell renderer to highlight items with less than 3 available
+        // Set a custom cell renderer to highlight items with less than 3 available
         productTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -178,12 +184,14 @@ public class OnlineShoppingGUI extends JFrame {
         public void mouseClicked(MouseEvent e) {
 
             if (e.getSource() == productTable) {
+                // Get the selected row index in the product table
                 int selectedRow = productTable.getSelectedRow();
                 Product selectedProduct;
 
                 // Check the selected category in the combo box
                 String selectedCategory = (String) productTypeComboBox.getSelectedItem();
 
+                // If "All" is selected, get the product directly from the original list
                 if ("All".equals(selectedCategory)) {
                     selectedProduct = productList.get(selectedRow);
                 } else {
@@ -191,7 +199,7 @@ public class OnlineShoppingGUI extends JFrame {
                     ArrayList<Product> filteredList = (ArrayList<Product>) productList.stream()
                             .filter(product -> selectedCategory.equals(product.getProductType()))
                             .collect(Collectors.toList());
-
+                    // Get the product from the filtered list based on the selected row
                     selectedProduct = filteredList.get(selectedRow);
                 }
 
@@ -208,6 +216,8 @@ public class OnlineShoppingGUI extends JFrame {
                 );
 
             }
+
+
             else if (e.getSource()==shoppingCartButton){
                 shoppingCartButton.setBackground(Color.RED);
                 JFrame newFrame = new JFrame("Shopping Cart");
