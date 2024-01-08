@@ -253,6 +253,7 @@ public class OnlineShoppingGUI extends JFrame {
                 //cart.printProduct();
 
                 JTable cartTable = new JTable(getTableModel());
+                cartTable.setEnabled(false);
                 JScrollPane scrollPane = new JScrollPane(cartTable);
                 scrollPane.setPreferredSize(new Dimension(500,100));
 
@@ -348,15 +349,24 @@ public class OnlineShoppingGUI extends JFrame {
 
             }
 
-            else if (e.getSource()==addToCartButton) {
+            else if (e.getSource() == addToCartButton) {
+                // Get the selected category from the combo box
+                String selectedCategory = (String) productTypeComboBox.getSelectedItem();
 
+                // Get the selected row in the product table
                 int selectedRow = productTable.getSelectedRow();
 
-                if (selectedRow>=0){
-                    Product selectedProduct= productList.get(selectedRow); //Create an object
+                if (selectedRow >= 0) {
+                    // Get the selected product directly from the filtered list
+                    ArrayList<Product> filteredProducts = getFilteredProducts(selectedCategory);
 
-                    addProduct(selectedProduct); //call ShoppingCart method
-                    System.out.println(" The item has been successfully added to the cart");
+                    if (selectedRow < filteredProducts.size()) {
+                        Product selectedProduct = filteredProducts.get(selectedRow);
+
+                        // Add the selected product to the shopping cart
+                        addProduct(selectedProduct);
+                        System.out.println("The item has been successfully added to the cart");
+                    }
                 }
             }
             else if (e.getSource()==sortButton){
@@ -415,4 +425,38 @@ public class OnlineShoppingGUI extends JFrame {
             setVisible(true);
         });
     }
+
+    // Add a method to get the filtered products based on the selected category
+//    private ArrayList<Product> getFilteredProducts(String selectedCategory) {
+//        ArrayList<Product> filteredProducts = new ArrayList<>();
+//
+//        for (Product product : productList) {
+//            if ("All".equals(selectedCategory) || product.getProductType().equals(selectedCategory)) {
+//                filteredProducts.add(product);
+//            }
+//        }
+//
+//        return filteredProducts;
+//    }
+    // Modify the getFilteredProducts method to consider the sorting order
+    // Modify the getFilteredProducts method to consider the sorting order
+    private ArrayList<Product> getFilteredProducts(String selectedCategory) {
+        ArrayList<Product> filteredProducts = new ArrayList<>();
+
+        int[] sortedRows = productTable.getSelectedRows(); // Get the selected rows in sorted order
+
+        for (int sortedRow : sortedRows) {
+            if (sortedRow >= 0 && sortedRow < productTable.getRowCount()) {
+                int modelRow = productTable.convertRowIndexToModel(sortedRow); // Convert to model index
+                Product product = ((MyTableModel) productTable.getModel()).getProductAtRow(modelRow);
+                if ("All".equals(selectedCategory) || product.getProductType().equals(selectedCategory)) {
+                    filteredProducts.add(product);
+                }
+            }
+        }
+
+        return filteredProducts;
+    }
+
+
 }

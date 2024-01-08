@@ -108,5 +108,12 @@ public Object getValueAt(int rowIndex, int columnIndex) {
         fireTableDataChanged();
     }
 
+    public Product getProductAtRow(int rowIndex) {
+        if (rowIndex >= 0 && rowIndex < productList.size()) {
+            return productList.get(rowIndex);
+        }
+        return null;
+    }
+
 
 }
