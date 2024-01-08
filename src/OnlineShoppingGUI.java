@@ -443,20 +443,13 @@ public class OnlineShoppingGUI extends JFrame {
     private ArrayList<Product> getFilteredProducts(String selectedCategory) {
         ArrayList<Product> filteredProducts = new ArrayList<>();
 
-        int[] sortedRows = productTable.getSelectedRows(); // Get the selected rows in sorted order
-
-        for (int sortedRow : sortedRows) {
-            if (sortedRow >= 0 && sortedRow < productTable.getRowCount()) {
-                int modelRow = productTable.convertRowIndexToModel(sortedRow); // Convert to model index
-                Product product = ((MyTableModel) productTable.getModel()).getProductAtRow(modelRow);
-                if ("All".equals(selectedCategory) || product.getProductType().equals(selectedCategory)) {
-                    filteredProducts.add(product);
-                }
+        for (Product product : productList) {
+            if ("All".equals(selectedCategory) || product.getProductType().equals(selectedCategory)) {
+                filteredProducts.add(product);
             }
         }
 
         return filteredProducts;
     }
-
 
 }

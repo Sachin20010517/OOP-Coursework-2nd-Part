@@ -1,11 +1,8 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
 public class User{
     private String userName;
     private String password;
-    private List<Product> purchaseHistory;
-    private boolean isFirstPurchase;
 
     public User(){
 
@@ -14,9 +11,6 @@ public class User{
     public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
-        this.purchaseHistory = new ArrayList<>();
-        this.isFirstPurchase = true;
-
     }
 
     public String getUserName() {
@@ -34,30 +28,4 @@ public class User{
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public List<Product> getPurchaseHistory() {
-        return purchaseHistory;
-    }
-    public boolean isFirstPurchase() {
-        return isFirstPurchase;
-    }
-
-    public void setFirstPurchase(boolean isFirstPurchase) {
-        this.isFirstPurchase = isFirstPurchase;
-    }
-    public void addPurchaseToHistory(Product product) {
-        purchaseHistory.add(product);
-    }
-    public String getPurchaseHistoryAsString() {
-        StringBuilder purchaseHistoryString = new StringBuilder();
-        for (Product product : purchaseHistory) {
-            purchaseHistoryString.append(product.getProductId()).append(",");
-        }
-        return purchaseHistoryString.toString();
-    }
-    public void addProductToPurchaseHistory(Product product) {
-        purchaseHistory.add(product);
-    }
-
-
 }
