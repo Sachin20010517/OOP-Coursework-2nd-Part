@@ -319,7 +319,7 @@ public class UserAuthenticationGUI extends JFrame {
             user.setFirstPurchase(false);
             saveUserDetails();
         } else {
-            // Existing code...
+
         }
     }
 
