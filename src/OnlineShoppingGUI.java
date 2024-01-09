@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
@@ -20,96 +21,132 @@ public class OnlineShoppingGUI extends JFrame {
 
 
     public OnlineShoppingGUI(ArrayList<Product> productList) {
-        this.productList =productList;
-        setTitle("                       Online Shopping GUI");
-        setSize(800, 700);
+        this.productList = productList;
+        setTitle("          Westminster Shopping Centre");
+        setSize(800, 650);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setBackground(Color.white);
+        setResizable(false);  //prevent frame from being resized
+
+        ImageIcon image= new ImageIcon("westminster.jpg");
+        setIconImage(image.getImage());
 
         // Initialize components
 
         shoppingCartButton = new JButton("Shopping Cart");
+        shoppingCartButton.setFont(new Font("Times New Roman",Font.BOLD,20));
 
         productTypeComboBox = new JComboBox<>(new String[]{"All", "Electronic", "Clothing"}); // Drop-down menu for product categories
 
-        MyTableModel myTableModel= new MyTableModel(productList);
+        MyTableModel myTableModel = new MyTableModel(productList);
         productTable = new JTable(myTableModel);
-        JScrollPane scrollPane=new JScrollPane(productTable);
+
+
+
+        JScrollPane scrollPane = new JScrollPane(productTable);
+        scrollPane.setBackground(Color.CYAN);
 
         //AddToCartButton
-        addToCartButton=new JButton("Add to Shopping Cart");
-        addToCartButton.setBackground(Color.ORANGE);
+        addToCartButton = new JButton("Add to Shopping Cart");
+        addToCartButton.setFont(new Font("Times New Roman",Font.HANGING_BASELINE,17));
+        addToCartButton.setBackground(new Color(0,76,153));
+        addToCartButton.setForeground(Color.WHITE);  // Set the font color to white
+        addToCartButton.setPreferredSize(new Dimension(200, 30));
 
-        productTextArea= new JTextArea();
+
+        productTextArea = new JTextArea();
 
         //Sort Button
-        sortButton = new JButton("Sort by Product Id");
-        sortButton.setBackground(Color.gray);
+        sortButton = new JButton("Sort");
+        sortButton.setBackground(Color.BLACK);
+        sortButton.setForeground(Color.WHITE);
+        sortButton.setFont(new Font("Times New Roman",Font.BOLD,17));
 
         // Set up layout of the JFrame
         setLayout(new FlowLayout());
 
 
-
         //Set up a new panel
-        JPanel topButtonPanel = new JPanel();
-        topButtonPanel.setPreferredSize(new Dimension(700,75));
+        JPanel topButtonPanel = new JPanel();             //topButtonPannel has been included shoppingCartBtnPanel
+        topButtonPanel.setPreferredSize(new Dimension(700, 75));
         topButtonPanel.setLayout(new BorderLayout());
-        topButtonPanel.setBackground(Color.LIGHT_GRAY);
+        topButtonPanel.setBackground(Color.white);
         //topButtonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT,30,30));
         topButtonPanel.setLayout(new BorderLayout());
 
         JPanel shoppingCartBtnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));  //For moving right "'Shopping cart' button
         shoppingCartBtnPanel.add(shoppingCartButton);
+        shoppingCartBtnPanel.setBackground(Color.WHITE);
         shoppingCartButton.setBackground(Color.GREEN);
-        topButtonPanel.add(shoppingCartBtnPanel,BorderLayout.NORTH);
+        topButtonPanel.add(shoppingCartBtnPanel, BorderLayout.NORTH);
 
         JPanel dropDownPanel = new JPanel();  //For moving center to drop-down menu
         dropDownPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         dropDownPanel.add(new JLabel("Select Product Category :  "));
+        dropDownPanel.setBackground(Color.WHITE);
         dropDownPanel.add(productTypeComboBox);
-        topButtonPanel.add(dropDownPanel,BorderLayout.CENTER);
+        topButtonPanel.add(dropDownPanel, BorderLayout.CENTER);
 
 
-
-        JPanel middlePanel= new JPanel();
+        JPanel middlePanel = new JPanel();
+        middlePanel.setBackground(Color.WHITE);
         middlePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        scrollPane.setPreferredSize(new Dimension(700,80));
-        middlePanel.setPreferredSize(new Dimension(800,100));
-        //productTable.setPreferredSize(new Dimension(700,100));
+        scrollPane.setPreferredSize(new Dimension(700, 80));
+        middlePanel.setPreferredSize(new Dimension(800, 100));
+        scrollPane.setBackground(Color.WHITE);
         middlePanel.add(scrollPane);
 
 
         JPanel sortBtnPanel = new JPanel(new BorderLayout());
-        sortBtnPanel.setPreferredSize(new Dimension(700,30));
-        sortBtnPanel.add(sortButton,BorderLayout.WEST);
+        sortBtnPanel.setPreferredSize(new Dimension(700, 30));
+        sortBtnPanel.setBackground(Color.WHITE);
+        sortBtnPanel.add(sortButton, BorderLayout.WEST);
 
 
-
-
-        JPanel bottomPanel = new JPanel();
+        JPanel bottomPanel = new JPanel();//bottomPannel has been included TextArea and addToCart button
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));  //This is not necessary. Because  FlowLayout is the default layout manager for every JPanel
-        bottomPanel.setPreferredSize(new Dimension(800,300));
-        productTextArea.setPreferredSize(new Dimension(700,250));
+        bottomPanel.setPreferredSize(new Dimension(800, 300));
+        bottomPanel.setBackground(Color.WHITE);
+        productTextArea.setPreferredSize(new Dimension(700, 250));
+        productTextArea.setBackground(Color.LIGHT_GRAY);
+
         bottomPanel.add(productTextArea);
         bottomPanel.add(addToCartButton);
 
 
+        //Adding vertical line to the GUI
+        JSeparator separator=new JSeparator(SwingConstants.HORIZONTAL);
+        separator.setPreferredSize(new Dimension(800, 20));
+        separator.setBackground(Color.black);
 
-        MouseHandler mouseHandler= new MouseHandler();
+        add(topButtonPanel);
+        add(middlePanel);
+        add(sortBtnPanel);
+        // Add an empty space between sortButton and separator
+        add(Box.createRigidArea(new Dimension(0, 60)));
+        add(separator);
+        add(new JLabel("Select Product Details")); //Making & adding label for 'Select Product Details'
+        add(bottomPanel);
+
+
+        MouseHandler mouseHandler = new MouseHandler();
         shoppingCartButton.addMouseListener(mouseHandler);
         productTable.addMouseListener(mouseHandler);
         addToCartButton.addMouseListener(mouseHandler);
         sortButton.addMouseListener(mouseHandler);
 
 
+        // After initializing the components
+//        shoppingCartButton.setFocusable(true);
+//        productTable.setFocusable(true);
+//        addToCartButton.setFocusable(true);
 
+        KeyHandlerclass keyHandler = new KeyHandlerclass();
 
+        shoppingCartButton.addKeyListener(keyHandler);
+        productTable.addKeyListener(keyHandler);
+        addToCartButton.addKeyListener(keyHandler);
 
-        add(topButtonPanel);
-        add(middlePanel);
-        add(sortBtnPanel);
-        add(new JLabel("Select Product Details")); //Making & adding label for 'Select Product Details'
-        add(bottomPanel);
 
         productTypeComboBox.addActionListener(new ActionListener() {
             @Override
@@ -130,8 +167,7 @@ public class OnlineShoppingGUI extends JFrame {
         // If "All" is selected, add all products to the filtered list
         if ("All".equals(selectedCategory)) {
             filteredProducts.addAll(productList);
-        }
-        else {
+        } else {
             // Filter the products based on the selected category
             filteredProducts.addAll(
                     productList.stream()
@@ -178,7 +214,7 @@ public class OnlineShoppingGUI extends JFrame {
     }
 
 
-    private class MouseHandler extends ShoppingCart implements MouseListener, MouseMotionListener{
+    private class MouseHandler extends ShoppingCart implements MouseListener, MouseMotionListener {
 
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -205,20 +241,17 @@ public class OnlineShoppingGUI extends JFrame {
 
                 // Display details in productTextArea
                 productTextArea.setText(
-                        "\nProduct ID: " + selectedProduct.getProductId() + "\n\n" +
-                                "Category  : " + selectedProduct.getProductType() + "\n\n" +
-                                "Name      : " + selectedProduct.getProductName() + "\n\n" +
-                                ((selectedProduct instanceof Clothing) ? "Size           : " + ((Clothing) selectedProduct).getSize() + "\n\n" : "") +
-                                ((selectedProduct instanceof Clothing) ? "Product Color  : " + ((Clothing) selectedProduct).getColor() + "\n\n" : "") +
-                                ((selectedProduct instanceof Electronics) ? "Product Brand  : " + ((Electronics) selectedProduct).getBrand() + "\n\n" : "") +
-                                ((selectedProduct instanceof Electronics) ? "Warranty Period: " + ((Electronics) selectedProduct).getWarrentyPeriod() + "\n\n" : "") +
-                                "Items Available: " + selectedProduct.getNumberOfAvailableItem() + "\n\n"
+                        "\n     Product ID: " + selectedProduct.getProductId() + "\n\n" +
+                                "     Category  : " + selectedProduct.getProductType() + "\n\n" +
+                                "     Name      : " + selectedProduct.getProductName() + "\n\n" +
+                                ((selectedProduct instanceof Clothing) ? "     Size           : " + ((Clothing) selectedProduct).getSize() + "\n\n" : "") +
+                                ((selectedProduct instanceof Clothing) ? "     Product Color  : " + ((Clothing) selectedProduct).getColor() + "\n\n" : "") +
+                                ((selectedProduct instanceof Electronics) ? "     Product Brand  : " + ((Electronics) selectedProduct).getBrand() + "\n\n" : "") +
+                                ((selectedProduct instanceof Electronics) ? "    Warranty Period: " + ((Electronics) selectedProduct).getWarrentyPeriod() + "\n\n" : "") +
+                                "     Items Available: " + selectedProduct.getNumberOfAvailableItem() + "\n\n"
                 );
 
-            }
-
-
-            else if (e.getSource()==shoppingCartButton){
+            } else if (e.getSource() == shoppingCartButton) {
                 shoppingCartButton.setBackground(Color.RED);
                 JFrame newFrame = new JFrame("Shopping Cart");
                 newFrame.setSize(600, 500);
@@ -227,15 +260,15 @@ public class OnlineShoppingGUI extends JFrame {
 
                 JPanel containerPanel = new JPanel();
                 containerPanel.setLayout(new FlowLayout());
-                containerPanel.setPreferredSize(new Dimension(600,450));
+                containerPanel.setPreferredSize(new Dimension(600, 450));
 
-                JPanel panel_1=new JPanel();
-                panel_1.setPreferredSize(new Dimension(500,150));
-                panel_1.setLayout(new FlowLayout(FlowLayout.CENTER,0,20)); //(FlowLayout.CENTER,0,40) was used for making a vertical gap from head
+                JPanel panel_1 = new JPanel();
+                panel_1.setPreferredSize(new Dimension(500, 150));
+                panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20)); //(FlowLayout.CENTER,0,40) was used for making a vertical gap from head
 
-                JPanel panel_2=new JPanel();
-                panel_2.setLayout(new GridLayout(4,2,20,20));
-                panel_2.setPreferredSize(new Dimension(400,150));
+                JPanel panel_2 = new JPanel();
+                panel_2.setLayout(new GridLayout(4, 2, 20, 20));
+                panel_2.setPreferredSize(new Dimension(400, 150));
 
                 JTextArea cartTextArea = new JTextArea();
                 cartTextArea.setBackground(Color.ORANGE);
@@ -255,7 +288,7 @@ public class OnlineShoppingGUI extends JFrame {
                 JTable cartTable = new JTable(getTableModel());
                 cartTable.setEnabled(false);
                 JScrollPane scrollPane = new JScrollPane(cartTable);
-                scrollPane.setPreferredSize(new Dimension(500,100));
+                scrollPane.setPreferredSize(new Dimension(500, 100));
 
 
                 //newFrame.add(cartScrollPane);
@@ -267,74 +300,69 @@ public class OnlineShoppingGUI extends JFrame {
 //                panel_2.add(new JLabel("First Purchase Discount(10%)"));
 //                panel_2.add(new JLabel("Final Total"));
 
-                JPanel newPanel1=new JPanel();
+                JPanel newPanel1 = new JPanel();
                 newPanel1.setLayout(new FlowLayout(FlowLayout.TRAILING));
                 //newPanel1.setPreferredSize(new Dimension(20,3));
                 newPanel1.add(new JLabel("Total"));
 
-                JPanel newPanel2=new JPanel();
+                JPanel newPanel2 = new JPanel();
                 newPanel2.setLayout(new FlowLayout(FlowLayout.LEADING));
                 //newPanel2.setPreferredSize(new Dimension(20,5));
                 newPanel2.add(cartTextArea);
 
-                JPanel newPanel3=new JPanel();
+                JPanel newPanel3 = new JPanel();
                 newPanel3.setLayout(new FlowLayout(FlowLayout.TRAILING));
                 //newPanel3.setPreferredSize(new Dimension(20,3));
                 newPanel3.add(new JLabel("First Purchase Discount(10%)"));
 
-                JPanel newPanel4=new JPanel();
+                JPanel newPanel4 = new JPanel();
                 newPanel4.setLayout(new FlowLayout(FlowLayout.LEADING));
 
                 double totalCost = calculateTotalCost();
                 double discount = totalCost * 0.10; // 10% discount
                 //newPanel4.setPreferredSize(new Dimension(20,3));
-                newPanel4.add(new JLabel("-"+discount+"£"));
+                newPanel4.add(new JLabel("-" + discount + "£"));
 
-                JPanel newPanel5=new JPanel();
+                JPanel newPanel5 = new JPanel();
                 newPanel5.setLayout(new FlowLayout(FlowLayout.TRAILING));
                 //newPanel3.setPreferredSize(new Dimension(20,3));
                 newPanel5.add(new JLabel("Three items in same Category Discount(20%)"));
 
-                JPanel newPanel6=new JPanel();
+                JPanel newPanel6 = new JPanel();
                 newPanel6.setLayout(new FlowLayout(FlowLayout.LEADING));
-                double three_item_discount=calculateTotalCost() * 0.20;
-                if (getClothingQuantity()>=3 || getElectronicQuantity()>=3){
-                    newPanel6.add(new JLabel("-"+three_item_discount+"£"));
-                }
-                else {
-                    newPanel6.add(new JLabel("-"+0+"£"));
+                double three_item_discount = calculateTotalCost() * 0.20;
+                if (getClothingQuantity() >= 3 || getElectronicQuantity() >= 3) {
+                    newPanel6.add(new JLabel("-" + three_item_discount + "£"));
+                } else {
+                    newPanel6.add(new JLabel("-" + 0 + "£"));
                 }
 
 
-                JPanel newPanel7=new JPanel();
+                JPanel newPanel7 = new JPanel();
                 newPanel7.setLayout(new FlowLayout(FlowLayout.TRAILING));
                 //newPanel3.setPreferredSize(new Dimension(20,3));
                 newPanel7.add(new JLabel("Total"));
 
-                JPanel newPanel8=new JPanel();
-                double total_1= calculateTotalCost()-three_item_discount-discount;
-                double total_2=calculateTotalCost()-discount;
+                JPanel newPanel8 = new JPanel();
+                double total_1 = calculateTotalCost() - three_item_discount - discount;
+                double total_2 = calculateTotalCost() - discount;
                 newPanel8.setLayout(new FlowLayout(FlowLayout.LEADING));
-                if (getClothingQuantity()>=3 || getElectronicQuantity()>=3){
-                    newPanel8.add(new JLabel(total_1+"£"));
-                }
-                else {
-                    newPanel8.add(new JLabel(total_2+"£"));
+                if (getClothingQuantity() >= 3 || getElectronicQuantity() >= 3) {
+                    newPanel8.add(new JLabel(total_1 + "£"));
+                } else {
+                    newPanel8.add(new JLabel(total_2 + "£"));
 
                 }
-
-
 
 
                 panel_2.add(newPanel1);
                 panel_2.add(newPanel2);
-                panel_2.add(newPanel3 );
+                panel_2.add(newPanel3);
                 panel_2.add(newPanel4);
                 panel_2.add(newPanel5);
                 panel_2.add(newPanel6);
                 panel_2.add(newPanel7);
                 panel_2.add(newPanel8);
-
 
 
                 containerPanel.add(panel_1);
@@ -343,13 +371,10 @@ public class OnlineShoppingGUI extends JFrame {
                 newFrame.add(containerPanel);
 
 
-
                 newFrame.setVisible(true);
 
 
-            }
-
-            else if (e.getSource() == addToCartButton) {
+            } else if (e.getSource() == addToCartButton) {
                 // Get the selected category from the combo box
                 String selectedCategory = (String) productTypeComboBox.getSelectedItem();
 
@@ -368,17 +393,12 @@ public class OnlineShoppingGUI extends JFrame {
                         System.out.println("The item has been successfully added to the cart");
                     }
                 }
-            }
-            else if (e.getSource()==sortButton){
-                 sortTableByProductId();
+            } else if (e.getSource() == sortButton) {
+                sortTableByProductId();
             }
 
 
             //Table
-
-
-
-
 
 
         }
@@ -415,9 +435,7 @@ public class OnlineShoppingGUI extends JFrame {
     }
 
 
-
-
-    public void openWestminsterGUI(){
+    public void openWestminsterGUI() {
         // Initialize and display the GUI on the Event Dispatch Thread (EDT)
         SwingUtilities.invokeLater(() -> {
             // Set the GUI visibility to true, making it visible to the user
@@ -450,6 +468,65 @@ public class OnlineShoppingGUI extends JFrame {
         }
 
         return filteredProducts;
+    }
+
+    public class KeyHandlerclass extends ShoppingCart implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            // Do nothing
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                handleEnterKey();
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            // Do nothing
+        }
+
+        private void handleEnterKey() {
+
+            if (productTable.isFocusOwner()) {
+                // Get the selected row in the product table
+                int selectedRow = productTable.getSelectedRow();
+
+                // Check the selected category in the combo box
+                String selectedCategory = (String) productTypeComboBox.getSelectedItem();
+
+                // If "All" is selected, get the product directly from the original list
+                Product selectedProduct;
+                if ("All".equals(selectedCategory)) {
+                    selectedProduct = productList.get(selectedRow);
+                } else {
+                    // Filter the list based on the selected category
+                    ArrayList<Product> filteredList = (ArrayList<Product>) productList.stream()
+                            .filter(product -> selectedCategory.equals(product.getProductType()))
+                            .collect(Collectors.toList());
+                    // Get the product from the filtered list based on the selected row
+                    selectedProduct = filteredList.get(selectedRow);
+                }
+
+                // Display details in productTextArea
+                productTextArea.setText(
+                        "\nProduct ID: " + selectedProduct.getProductId() + "\n\n" +
+                                "Category  : " + selectedProduct.getProductType() + "\n\n" +
+                                "Name      : " + selectedProduct.getProductName() + "\n\n" +
+                                ((selectedProduct instanceof Clothing) ? "Size           : " + ((Clothing) selectedProduct).getSize() + "\n\n" : "") +
+                                ((selectedProduct instanceof Clothing) ? "Product Color  : " + ((Clothing) selectedProduct).getColor() + "\n\n" : "") +
+                                ((selectedProduct instanceof Electronics) ? "Product Brand  : " + ((Electronics) selectedProduct).getBrand() + "\n\n" : "") +
+                                ((selectedProduct instanceof Electronics) ? "Warranty Period: " + ((Electronics) selectedProduct).getWarrentyPeriod() + "\n\n" : "") +
+                                "Items Available: " + selectedProduct.getNumberOfAvailableItem() + "\n\n"
+                );
+            }
+
+
+        }
+
     }
 
 }
