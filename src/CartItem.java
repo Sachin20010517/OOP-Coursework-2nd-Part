@@ -1,12 +1,20 @@
 public class CartItem {
     private Product product;
     private int quantity;
+    private String customerName;
 
 
-    public CartItem(Product product) {
+    public CartItem(Product product,String customerName) {
         this.product = product;
         this.quantity = 1; // Initialize quantity to 1 when adding the product to the cart
 
+        this.customerName = customerName;
+    }
+
+    public CartItem(Product product, int quantity, String customerName) {
+        this.product = product;
+        this.quantity = quantity;
+        this.customerName = customerName;
     }
 
     public Product getProduct() {
@@ -27,7 +35,10 @@ public class CartItem {
     public double getTotalPrice() {
         return quantity * product.getPrice();
     }
-    
+
+    public String getCustomerName() {
+        return customerName;
+    }
 }
 
 /*Using a separate CartItem class provides a clear structure for handling shopping cart-related

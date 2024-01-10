@@ -16,11 +16,16 @@ public class UserAuthenticationGUI extends JFrame {
 
     private boolean authenticated;
     private ArrayList<Product> products;
+    private static String username;
 
+    public UserAuthenticationGUI(){
+
+    }
     public UserAuthenticationGUI(ArrayList<User> userList, ArrayList<Product> products) {
         this.products=products;
         this.userList = userList;
         this.authenticated = false;
+
 
         loadUserDetails(); // Load user details from the file
 
@@ -107,11 +112,12 @@ public class UserAuthenticationGUI extends JFrame {
 
     private void signIn() {
         // Retrieve entered username and password
-        String username = usernameField.getText();
+        username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
         // Find the user with the entered username
         User user = findUser(username);
+
 
         // Check if the user exists and the password matches
         if (user != null && user.getPassword().equals(password)) {
@@ -123,6 +129,10 @@ public class UserAuthenticationGUI extends JFrame {
             // Display an error message for invalid username or password
             JOptionPane.showMessageDialog(this, "Invalid username or password. Please try again.");
         }
+    }
+
+    public String sendUserName() {
+        return username;
     }
 
     private void registerUser() {

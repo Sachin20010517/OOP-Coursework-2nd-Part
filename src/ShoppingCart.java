@@ -1,4 +1,7 @@
 import javax.swing.table.DefaultTableModel;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class ShoppingCart {
@@ -8,7 +11,7 @@ public class ShoppingCart {
         this.shoppingCartList=new ArrayList<>();
     }
 
-    public void addProduct(Product _product){
+    public void addProduct(Product _product, String customerName){
         // Check if the product is already in the cart
         for (CartItem item : shoppingCartList) {
             if (item.getProduct().equals(_product)) {
@@ -19,7 +22,8 @@ public class ShoppingCart {
         }
 
         // Product is not in the cart, add a new CartItem
-        shoppingCartList.add(new CartItem(_product));
+
+        shoppingCartList.add(new CartItem(_product,customerName));
     }
 
     public void removeProduct(Product _product){
@@ -97,4 +101,22 @@ public class ShoppingCart {
 
         return model;
     }
+
+    public void saveCartToFile(String fileName) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
+            for (CartItem item : shoppingCartList) {
+                writer.println("Customer: " + item.getCustomerName());
+                writer.println("Product: " + item.getProduct().getProductName());
+                writer.println("Quantity: " + item.getQuantity());
+                writer.println("Total Price: " + item.getTotalPrice());
+                writer.println("--------------------");
+            }
+            System.out.println("Shopping cart saved to " + fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error saving shopping cart to file: " + e.getMessage());
+        }
+    }
+
+
 }

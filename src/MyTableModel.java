@@ -56,7 +56,7 @@ public class MyTableModel extends    AbstractTableModel{
 @Override
 public Object getValueAt(int rowIndex, int columnIndex) {
     if (columnIndex == 0) {
-        return productList.get(rowIndex).getProductId();
+        return "       "+productList.get(rowIndex).getProductId();
     }
     else if (columnIndex == 1) {
         String productName = productList.get(rowIndex).getProductName();
@@ -70,7 +70,7 @@ public Object getValueAt(int rowIndex, int columnIndex) {
             return productName;
         }
     } else if (columnIndex == 2) {
-        return productList.get(rowIndex).getProductType();
+        return "       "+productList.get(rowIndex).getProductType();
     } else if (columnIndex == 3) {
         return productList.get(rowIndex).getPrice();
     } else if (columnIndex == 4) {

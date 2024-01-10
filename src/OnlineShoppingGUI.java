@@ -3,6 +3,9 @@ import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -128,8 +131,8 @@ public class OnlineShoppingGUI extends JFrame {
         add(new JLabel("Select Product Details")); //Making & adding label for 'Select Product Details'
         add(bottomPanel);
 
-
-        MouseHandler mouseHandler = new MouseHandler();
+        UserAuthenticationGUI  userName= new UserAuthenticationGUI();
+        MouseHandler mouseHandler = new MouseHandler(userName.sendUserName());
         shoppingCartButton.addMouseListener(mouseHandler);
         productTable.addMouseListener(mouseHandler);
         addToCartButton.addMouseListener(mouseHandler);
@@ -215,7 +218,11 @@ public class OnlineShoppingGUI extends JFrame {
 
 
     private class MouseHandler extends ShoppingCart implements MouseListener, MouseMotionListener {
-
+        private final String customerName;
+        private static double discount;
+        public MouseHandler(String customerName) {
+            this.customerName = customerName;
+        }
         @Override
         public void mouseClicked(MouseEvent e) {
 
@@ -315,13 +322,43 @@ public class OnlineShoppingGUI extends JFrame {
                 //newPanel3.setPreferredSize(new Dimension(20,3));
                 newPanel3.add(new JLabel("First Purchase Discount(10%)"));
 
+//                JPanel newPanel4 = new JPanel();
+//                newPanel4.setLayout(new FlowLayout(FlowLayout.LEADING));
+//
+//                double totalCost = calculateTotalCost();
+//                double discount = totalCost * 0.10; // 10% discount
+//                //newPanel4.setPreferredSize(new Dimension(20,3));
+//                newPanel4.add(new JLabel("-" + discount + "£"));
+
                 JPanel newPanel4 = new JPanel();
                 newPanel4.setLayout(new FlowLayout(FlowLayout.LEADING));
-
                 double totalCost = calculateTotalCost();
-                double discount = totalCost * 0.10; // 10% discount
-                //newPanel4.setPreferredSize(new Dimension(20,3));
-                newPanel4.add(new JLabel("-" + discount + "£"));
+
+
+
+
+
+
+                // Check if it's the customer's first purchase
+                //UserAuthenticationGUI currentUser =new UserAuthenticationGUI();
+                //String customerName = currentUser.sendUserName();
+                boolean isFirstPurchase = isCustomerFirstPurchase(customerName);
+
+                if (isFirstPurchase) {
+                    // Apply the 10% bonus for the first purchase
+                    discount += totalCost * 0.10;
+//                    total_2=total_2-discount;
+                    // Save the cart information to a text file
+                    saveCartToFile("cart.txt");
+                    newPanel4.add(new JLabel("-" + discount + "£"));
+                }
+                else {
+                    saveCartToFile("cart.txt");
+                    newPanel4.add(new JLabel("-" + discount + "£"));
+                }
+
+
+
 
                 JPanel newPanel5 = new JPanel();
                 newPanel5.setLayout(new FlowLayout(FlowLayout.TRAILING));
@@ -330,11 +367,14 @@ public class OnlineShoppingGUI extends JFrame {
 
                 JPanel newPanel6 = new JPanel();
                 newPanel6.setLayout(new FlowLayout(FlowLayout.LEADING));
+
                 double three_item_discount = calculateTotalCost() * 0.20;
+
                 if (getClothingQuantity() >= 3 || getElectronicQuantity() >= 3) {
                     newPanel6.add(new JLabel("-" + three_item_discount + "£"));
-                } else {
-                    newPanel6.add(new JLabel("-" + 0 + "£"));
+                }
+                else {
+                    newPanel6.add(new JLabel("-0.00£"));
                 }
 
 
@@ -344,12 +384,26 @@ public class OnlineShoppingGUI extends JFrame {
                 newPanel7.add(new JLabel("Total"));
 
                 JPanel newPanel8 = new JPanel();
-                double total_1 = calculateTotalCost() - three_item_discount - discount;
-                double total_2 = calculateTotalCost() - discount;
+
+
+
+                double total_1 = calculateTotalCost() - three_item_discount-discount;
+                double total_2 = calculateTotalCost()-discount;
+
                 newPanel8.setLayout(new FlowLayout(FlowLayout.LEADING));
                 if (getClothingQuantity() >= 3 || getElectronicQuantity() >= 3) {
                     newPanel8.add(new JLabel(total_1 + "£"));
-                } else {
+                }
+//                else if (getClothingQuantity() >= 3 || getElectronicQuantity() >= 3) {
+//                    newPanel8.add(new JLabel(total_1 + "£"));
+//                }
+//                else if (isFirstPurchase) {
+//                    newPanel8.add(new JLabel(total_2 + "£"));
+//                }
+//                else if (getClothingQuantity() < 3 || getElectronicQuantity() < 3 && !(isFirstPurchase)) {
+//                    newPanel8.add(new JLabel(totalCost + "£"));
+//                }
+                else {
                     newPanel8.add(new JLabel(total_2 + "£"));
 
                 }
@@ -389,8 +443,15 @@ public class OnlineShoppingGUI extends JFrame {
                         Product selectedProduct = filteredProducts.get(selectedRow);
 
                         // Add the selected product to the shopping cart
-                        addProduct(selectedProduct);
-                        System.out.println("The item has been successfully added to the cart");
+                        //addProduct(selectedProduct);
+                        //System.out.println("The item has been successfully added to the cart");
+                        UserAuthenticationGUI currentUser =new UserAuthenticationGUI();
+                        CartItem sel_product= new CartItem(selectedProduct,currentUser.sendUserName());
+                        System.out.println(currentUser.sendUserName()+", "+sel_product.getProduct());
+
+                        addProduct(selectedProduct,currentUser.sendUserName());
+
+
                     }
                 }
             } else if (e.getSource() == sortButton) {
@@ -528,5 +589,21 @@ public class OnlineShoppingGUI extends JFrame {
         }
 
     }
+    private boolean isCustomerFirstPurchase(String customerName) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("cart.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Customer: " + customerName)) {
+                    // Customer name already exists in the file
+                    return false;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Customer name doesn't exist in the file
+        return true;
+    }
+
 
 }
