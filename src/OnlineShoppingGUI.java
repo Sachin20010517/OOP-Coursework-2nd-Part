@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
@@ -254,7 +253,7 @@ public class OnlineShoppingGUI extends JFrame {
                                 ((selectedProduct instanceof Clothing) ? "     Size           : " + ((Clothing) selectedProduct).getSize() + "\n\n" : "") +
                                 ((selectedProduct instanceof Clothing) ? "     Product Color  : " + ((Clothing) selectedProduct).getColor() + "\n\n" : "") +
                                 ((selectedProduct instanceof Electronics) ? "     Product Brand  : " + ((Electronics) selectedProduct).getBrand() + "\n\n" : "") +
-                                ((selectedProduct instanceof Electronics) ? "    Warranty Period: " + ((Electronics) selectedProduct).getWarrentyPeriod() + "\n\n" : "") +
+                                ((selectedProduct instanceof Electronics) ? "    Warranty Period: " + ((Electronics) selectedProduct).getWarrantyPeriod() + "\n\n" : "") +
                                 "     Items Available: " + selectedProduct.getNumberOfAvailableItem() + "\n\n"
                 );
 
@@ -580,7 +579,7 @@ public class OnlineShoppingGUI extends JFrame {
                                 ((selectedProduct instanceof Clothing) ? "Size           : " + ((Clothing) selectedProduct).getSize() + "\n\n" : "") +
                                 ((selectedProduct instanceof Clothing) ? "Product Color  : " + ((Clothing) selectedProduct).getColor() + "\n\n" : "") +
                                 ((selectedProduct instanceof Electronics) ? "Product Brand  : " + ((Electronics) selectedProduct).getBrand() + "\n\n" : "") +
-                                ((selectedProduct instanceof Electronics) ? "Warranty Period: " + ((Electronics) selectedProduct).getWarrentyPeriod() + "\n\n" : "") +
+                                ((selectedProduct instanceof Electronics) ? "Warranty Period: " + ((Electronics) selectedProduct).getWarrantyPeriod() + "\n\n" : "") +
                                 "Items Available: " + selectedProduct.getNumberOfAvailableItem() + "\n\n"
                 );
             }

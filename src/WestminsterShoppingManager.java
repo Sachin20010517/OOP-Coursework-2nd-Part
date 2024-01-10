@@ -47,26 +47,12 @@ public class WestminsterShoppingManager implements ShoppingManager{
         } else {
             System.out.println("Product with ID " + _productId + " not found.");
         }
-//        for (Product product : product_arrayList) {
-//            if (product.getProductId().equals(_product)){
-//                product_arrayList.remove(product);
-//            }
-//        }
-//        System.out.println("Successfully deleted "+_product+" product");
+
     }
 
 
     public void printProduct() {
-//        if (product_arrayList.isEmpty()){
-//            System.out.println("\nThe store is completely empty!!!.\n");
-//        }
-//        else{
-//            System.out.println("          List of Products:\n");
-//            for (Product product : product_arrayList) {
-//                displayProductInfo(product);
-//            }
-//
-//        }
+
         if (product_arrayList.isEmpty()) {   // Check if the product list is empty
             System.out.println("\nThe store is completely empty!!!.\n");
         } else {
@@ -92,7 +78,7 @@ public class WestminsterShoppingManager implements ShoppingManager{
             System.out.println("Product Id  : "+product.getProductId());
             System.out.println("Product Name: "+product.getProductName());
             System.out.println("Brand       : " + ((Electronics) product).getBrand());
-            System.out.println("Warranty Period(Years): " + ((Electronics) product).getWarrentyPeriod());
+            System.out.println("Warranty Period(Years): " + ((Electronics) product).getWarrantyPeriod());
 
         }
 
@@ -108,21 +94,6 @@ public class WestminsterShoppingManager implements ShoppingManager{
         System.out.println("Available Items       : " + product.getNumberOfAvailableItem());
         System.out.println("Price       : " + product.getPrice());
         System.out.println("    ******************\n");
-
-//        if(product.getProductType().equals("Electronic")){
-//            System.out.println("I got this.");
-//        }
-
-        /*if (product instanceof Electronics) {
-            System.out.println("Electronics - " + product.getProductName() + " (ID: " + product.getProductId() + ")");
-            System.out.println("Brand: " + ((Electronics) product).getBrand());
-            System.out.println("Warranty Period: " + ((Electronics) product).getWarrentyPeriod());
-        } else if (product instanceof Clothing) {
-            System.out.println("Clothing - " + product.getProductName() + " (ID: " + product.getProductId() + ")");
-            System.out.println("Size: " + ((Clothing) product).getSize());
-            System.out.println("Color: " + ((Clothing) product).getColor());
-        }
-        */
     }
 
 
@@ -153,7 +124,7 @@ public class WestminsterShoppingManager implements ShoppingManager{
         if (product.getProductType().equals("Electronic")) {
             return "E|" + product.getProductId() + "|" + product.getProductName() + "|" +
                     product.getNumberOfAvailableItem() + "|" + product.getPrice() + "|" +
-                    ((Electronics) product).getBrand() + "|" + ((Electronics) product).getWarrentyPeriod();
+                    ((Electronics) product).getBrand() + "|" + ((Electronics) product).getWarrantyPeriod();
         } else if (product.getProductType().equals("Clothing")) {
             return "C|" + product.getProductId() + "|" + product.getProductName() + "|" +
                     product.getNumberOfAvailableItem() + "|" + product.getPrice() + "|" +
