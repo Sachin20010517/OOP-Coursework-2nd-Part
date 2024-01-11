@@ -32,11 +32,17 @@ public class UserAuthenticationGUI extends JFrame {
         setTitle("User Authentication");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //getContentPane().setBackground(Color.white);
+        setResizable(false);  //prevent frame from being resized
+
+        ImageIcon image= new ImageIcon("westminster.jpg");
+        setIconImage(image.getImage());
 
         initializeComponents();
 
         JPanel northPanel=new JPanel(new FlowLayout(FlowLayout.CENTER));
         northPanel.setPreferredSize(new Dimension(400,50));
+        northPanel.setBackground(Color.white);
         JLabel label_1=new JLabel();
         label_1.setText("Welcome!");
         label_1.setForeground(new Color(255, 0, 0));
@@ -53,7 +59,9 @@ public class UserAuthenticationGUI extends JFrame {
     }
 
     private void initializeComponents() {
-        usernameField = new JTextField(10);
+        usernameField = new JTextField(15);
+        usernameField.setPreferredSize(new Dimension(150,20));
+
         passwordField = new JPasswordField(10);
         signInButton = new JButton("Sign In");
         signInButton.setBackground(Color.lightGray);
@@ -92,19 +100,26 @@ public class UserAuthenticationGUI extends JFrame {
         JPanel signInPanel=new JPanel();
         signInPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         signInPanel.add(signInButton);
+        signInPanel.setBackground(Color.white);
 
         JPanel registerPanel= new JPanel(new FlowLayout(FlowLayout.RIGHT));
         registerPanel.add(registerButton);
+        registerPanel.setBackground(Color.white);
+
+        JPanel usernameFieldPanel=new JPanel(new FlowLayout(FlowLayout.LEFT));
+        usernameFieldPanel.add(usernameField);
+        //usernameFieldPanel.setPreferredSize(new Dimension(100,30));
+        //usernameFieldPanel.setBackground(Color.white);
 
         mainPanel.add(new JLabel("Username:"));
-        mainPanel.add(usernameField);
+        mainPanel.add(usernameFieldPanel);
         mainPanel.add(new JLabel("Password:"));
         mainPanel.add(passwordField);
         mainPanel.add(signInPanel);
         mainPanel.add(registerPanel);
 
-        mainPanel.setBackground(Color.GRAY);
-        containerPanel.setBackground(Color.ORANGE);
+        mainPanel.setBackground(Color.white);
+        containerPanel.setBackground(Color.white);
         containerPanel.add(mainPanel);
 
         return containerPanel;
@@ -169,32 +184,6 @@ public class UserAuthenticationGUI extends JFrame {
         return null; // Return null if the user is not found
     }
 
-//    private void openShoppingGUI() {
-//        SwingUtilities.invokeLater(() -> {
-//            OnlineShoppingGUI shoppingGUI = new OnlineShoppingGUI(new ArrayList<>());
-//            shoppingGUI.openWestminsterGUI();
-//            dispose();
-//        });
-//    }
-
-//    private void loadUserDetails() {
-//        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(USER_FILE_PATH))) {
-//            userList = (ArrayList<User>) objectInputStream.readObject();
-//        } catch (FileNotFoundException e) {
-//            System.out.println("User details file not found. Creating a new file.");
-//            userList = new ArrayList<>();
-//        } catch (IOException | ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void saveUserDetails() {
-//        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(USER_FILE_PATH))) {
-//            objectOutputStream.writeObject(userList);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     private void loadUserDetails() {
         try (BufferedReader reader = new BufferedReader(new FileReader(USER_FILE_PATH))) {
@@ -228,15 +217,4 @@ public class UserAuthenticationGUI extends JFrame {
         }
     }
 
-
-
-
-
-    public boolean isAuthenticated() {
-        return authenticated;
-    }
-
-//    public static void main(String[] args) {
-//        new UserAuthenticationGUI(new ArrayList<>());
-//    }
 }

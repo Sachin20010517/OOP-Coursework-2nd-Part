@@ -10,6 +10,8 @@ public class Main {
         System.out.println("\n      ---  Welcome to the Westminster Shopping System  ---");
         Scanner input = new Scanner(System.in);
 
+        manager.loadProduct();//Loading previous data
+
 
         int choice;
         do{
@@ -64,7 +66,7 @@ public class Main {
                     break;
 
                 case 5:
-                    manager.loadProduct();
+
 
                     break;
                 case 6:
