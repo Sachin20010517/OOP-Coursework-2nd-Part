@@ -69,7 +69,7 @@ public class OnlineShoppingGUI extends JFrame {
 
 
         //Set up a new panel
-        JPanel topButtonPanel = new JPanel();             //topButtonPannel has been included shoppingCartBtnPanel
+        JPanel topButtonPanel = new JPanel();             //topButtonPanel has been included shoppingCartBtnPanel
         topButtonPanel.setPreferredSize(new Dimension(700, 75));
         topButtonPanel.setLayout(new BorderLayout());
         topButtonPanel.setBackground(Color.white);
@@ -427,7 +427,69 @@ public class OnlineShoppingGUI extends JFrame {
                 newFrame.setVisible(true);
 
 
-            } else if (e.getSource() == addToCartButton) {
+            }
+
+//            else if (e.getSource() == addToCartButton) {
+//                // Get the selected category from the combo box
+//                String selectedCategory = (String) productTypeComboBox.getSelectedItem();
+//
+//                // Get the selected row in the product table
+//                int selectedRow = productTable.getSelectedRow();
+//
+//                if (selectedRow >= 0) {
+//                    // Get the selected product directly from the filtered list
+//                    ArrayList<Product> filteredProducts = getFilteredProducts(selectedCategory);
+//
+//                    if (selectedRow < filteredProducts.size()) {
+//                        Product selectedProduct = filteredProducts.get(selectedRow);
+//
+//                        // Add the selected product to the shopping cart
+//                        //addProduct(selectedProduct);
+//                        //System.out.println("The item has been successfully added to the cart");
+//                        UserAuthenticationGUI currentUser =new UserAuthenticationGUI();
+//                        CartItem sel_product= new CartItem(selectedProduct,currentUser.sendUserName());
+//                        System.out.println(currentUser.sendUserName()+", "+sel_product.getProduct());
+//
+//                        addProduct(selectedProduct,currentUser.sendUserName());
+//
+//
+//                    }
+//                }
+//            }
+
+//            else if (e.getSource() == addToCartButton) {
+//                // Get the selected category from the combo box
+//                String selectedCategory = (String) productTypeComboBox.getSelectedItem();
+//
+//                // Get the selected row in the product table
+//                int selectedRow = productTable.getSelectedRow();
+//
+//                if (selectedRow >= 0) {
+//                    // Get the selected product directly from the filtered list
+//                    ArrayList<Product> filteredProducts = getFilteredProducts(selectedCategory);
+//
+//                    if (selectedRow < filteredProducts.size()) {
+//                        Product selectedProductFromList = filteredProducts.get(selectedRow);
+//
+//                        // Decrease the number of available items
+//                        selectedProductFromList.setNumberOfAvailableItem(selectedProductFromList.getNumberOfAvailableItem() - 1);
+//                        System.out.println(selectedProductFromList.getNumberOfAvailableItem());
+//
+//                        updateProductTextArea(selectedProductFromList);
+//
+//                        //Please update productTextArea Here
+//
+//                        // Add the selected product to the shopping cart
+//                        UserAuthenticationGUI currentUser = new UserAuthenticationGUI();
+//                        CartItem sel_product = new CartItem(selectedProductFromList, currentUser.sendUserName());
+//                        System.out.println(currentUser.sendUserName() + ", " + sel_product.getProduct());
+//
+//                        addProduct(selectedProductFromList, currentUser.sendUserName());
+//                    }
+//                }
+//            }
+
+            else if (e.getSource() == addToCartButton) {
                 // Get the selected category from the combo box
                 String selectedCategory = (String) productTypeComboBox.getSelectedItem();
 
@@ -439,21 +501,37 @@ public class OnlineShoppingGUI extends JFrame {
                     ArrayList<Product> filteredProducts = getFilteredProducts(selectedCategory);
 
                     if (selectedRow < filteredProducts.size()) {
-                        Product selectedProduct = filteredProducts.get(selectedRow);
+                        Product selectedProductFromList = filteredProducts.get(selectedRow);
 
-                        // Add the selected product to the shopping cart
-                        //addProduct(selectedProduct);
-                        //System.out.println("The item has been successfully added to the cart");
-                        UserAuthenticationGUI currentUser =new UserAuthenticationGUI();
-                        CartItem sel_product= new CartItem(selectedProduct,currentUser.sendUserName());
-                        System.out.println(currentUser.sendUserName()+", "+sel_product.getProduct());
+                        // Check if the number of available items is greater than 0 before adding to cart
+                        if (selectedProductFromList.getNumberOfAvailableItem() > 0) {
+                            // Decrease the number of available items
+                            selectedProductFromList.setNumberOfAvailableItem(selectedProductFromList.getNumberOfAvailableItem() - 1);
 
-                        addProduct(selectedProduct,currentUser.sendUserName());
+                            // Update productTextArea with the added product
+                            updateProductTextArea(selectedProductFromList);
 
+                            // Add the selected product to the shopping cart
+                            UserAuthenticationGUI currentUser = new UserAuthenticationGUI();
+                            CartItem sel_product = new CartItem(selectedProductFromList, currentUser.sendUserName());
+                            //System.out.println(currentUser.sendUserName() + ", " + sel_product.getProduct());
 
+                            addProduct(selectedProductFromList, currentUser.sendUserName());
+                        }  else {
+                            // Display an error message if the number of available items is 0
+                            JOptionPane.showMessageDialog((Component) e.getSource(),
+                                    "Error: No available items for '" + selectedProductFromList.getProductName()+"' at this moment.",
+                                    "    Out of Stock!! ", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
-            } else if (e.getSource() == sortButton) {
+            }
+
+
+
+
+
+            else if (e.getSource() == sortButton) {
                 sortTableByProductId();
             }
 
@@ -603,6 +681,26 @@ public class OnlineShoppingGUI extends JFrame {
         // Customer name doesn't exist in the file
         return true;
     }
+
+    private void updateProductTextArea(Product addedProduct) {
+        // Clear existing content in productTextArea
+        productTextArea.setText("");
+
+        // Append the information of the added product to the productTextArea
+        productTextArea.append(
+                "\n     Product ID: " + addedProduct.getProductId() + "\n\n" +
+                        "     Category  : " + addedProduct.getProductType() + "\n\n" +
+                        "     Name      : " + addedProduct.getProductName() + "\n\n" +
+                        ((addedProduct instanceof Clothing) ? "     Size           : " + ((Clothing) addedProduct).getSize() + "\n\n" : "") +
+                        ((addedProduct instanceof Clothing) ? "     Product Color  : " + ((Clothing) addedProduct).getColor() + "\n\n" : "") +
+                        ((addedProduct instanceof Electronics) ? "     Product Brand  : " + ((Electronics) addedProduct).getBrand() + "\n\n" : "") +
+                        ((addedProduct instanceof Electronics) ? "    Warranty Period: " + ((Electronics) addedProduct).getWarrantyPeriod() + "\n\n" : "") +
+                        "     Items Available: " + addedProduct.getNumberOfAvailableItem() + "\n\n"
+        );
+    }
+
+
+
 
 
 }
