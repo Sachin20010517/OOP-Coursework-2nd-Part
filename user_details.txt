@@ -13,3 +13,4 @@ sitha,2001
 Banda,0517
 Kumu,2000
 soora,6000
+Sachin,01564

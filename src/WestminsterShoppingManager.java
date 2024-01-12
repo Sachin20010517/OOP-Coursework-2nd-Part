@@ -1,6 +1,4 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
@@ -12,7 +10,7 @@ public class WestminsterShoppingManager implements ShoppingManager{
     private static final int maximumProduct=50;
 
     public WestminsterShoppingManager(){
-        product_arrayList=new ArrayList<Product>();
+        product_arrayList=new ArrayList<>();
     }
 
 
@@ -45,7 +43,7 @@ public class WestminsterShoppingManager implements ShoppingManager{
             displayProductInfo(foundProduct);
             System.out.println("Total number of products left: " + product_arrayList.size());
         } else {
-            System.out.println("Product with ID " + _productId + " not found.");
+            System.out.println("  Product with ID " + _productId + " not found. Try Again!!!");
         }
 
     }
@@ -152,6 +150,9 @@ public class WestminsterShoppingManager implements ShoppingManager{
 
     }
 
+
+
+
     private Product textReader(String readProduct) {
         String[] tokens = readProduct.split("\\|");
         if (tokens.length >= 6) {
@@ -172,10 +173,19 @@ public class WestminsterShoppingManager implements ShoppingManager{
         }
         return null;
     }
-    public ArrayList<Product> runGUI(){
+
+    public static ArrayList<Product> getProductArrayList() {
         return product_arrayList;
     }
 
+    // Method to get the maximumProduct
+    public static int getMaximumProduct() {
+        return maximumProduct;
+    }
+
+    public ArrayList<Product> runGUI(){
+        return product_arrayList;
+    }
 
 
 

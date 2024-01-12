@@ -67,7 +67,7 @@ public class ShoppingCart {
         model.addColumn("Product");
         model.addColumn("Category");
         model.addColumn("Quantity");
-        model.addColumn("Price($)");
+        model.addColumn("Price(£)");
 
         for (CartItem item : shoppingCartList) {
             Object[] rowData = {

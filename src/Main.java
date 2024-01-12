@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -30,24 +31,34 @@ public class Main {
             System.out.println();
 
             System.out.print("\nPlease Enter Your Option : _ _ _ _ ");
-            choice=input.nextInt();
+
+            try {
+                choice = input.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid data type!! Please enter a valid number.");
+                input.nextLine(); // Consume the invalid input
+                choice = -1; // Set choice to an invalid value to continue the loop
+            }
 
             switch (choice){
 
                 case 1:
                     System.out.print("\nWhich product do you want to add, clothing or electronics?\nSelect (1) if it's an electronic product; if not, select (2): ");
-                    int productType= input.nextInt();
-                    if (productType==1){
-                        Electronics electronic = addElectronics();
-                        manager.addProduct(electronic);
-                    }
-
-                    else if (productType==2){
-                        Clothing clothes = addClothes();
-                        manager.addProduct(clothes);
-                    }
-                    else {
-                        System.out.println("Please Enter Valid Number\n");
+                    int productType;
+                    try {
+                        productType = input.nextInt();
+                        if (productType == 1) {
+                            Electronics electronic = addElectronics();
+                            manager.addProduct(electronic);
+                        } else if (productType == 2) {
+                            Clothing clothes = addClothes();
+                            manager.addProduct(clothes);
+                        } else {
+                            System.out.println("Please Enter Valid Number\n");
+                        }
+                    } catch (InputMismatchException ex) {
+                        System.out.println("Invalid data type! Please enter a valid number.");
+                        input.nextLine(); // Consume the invalid input
                     }
                     break;
 
@@ -82,7 +93,7 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Not a valid option. Please make sure you are selecting a valid option.\n");
+                    System.out.println("Invalid number!!. Please make sure you are selecting a valid option between 0 to 6.\n");
 
             }
 

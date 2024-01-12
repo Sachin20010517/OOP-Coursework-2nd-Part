@@ -267,21 +267,32 @@ public class OnlineShoppingGUI extends JFrame {
             } else if (e.getSource() == shoppingCartButton) {
                 shoppingCartButton.setBackground(Color.RED);
                 JFrame newFrame = new JFrame("Shopping Cart");
+                newFrame.setResizable(false);  //prevent frame from being resized
+
+                ImageIcon image= new ImageIcon("westminster.jpg");
+                newFrame.setIconImage(image.getImage());
+
                 newFrame.setSize(600, 500);
                 newFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                 setLayout(new FlowLayout(FlowLayout.CENTER));
+                newFrame.getContentPane().setBackground(Color.white);
+
+
 
                 JPanel containerPanel = new JPanel();
                 containerPanel.setLayout(new FlowLayout());
                 containerPanel.setPreferredSize(new Dimension(600, 450));
+                containerPanel.setBackground(Color.white);
 
                 JPanel panel_1 = new JPanel();
                 panel_1.setPreferredSize(new Dimension(500, 150));
                 panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20)); //(FlowLayout.CENTER,0,40) was used for making a vertical gap from head
+                panel_1.setBackground(Color.white);
 
                 JPanel panel_2 = new JPanel();
                 panel_2.setLayout(new GridLayout(4, 2, 20, 20));
                 panel_2.setPreferredSize(new Dimension(400, 150));
+                panel_2.setBackground(Color.white);
 
                 //JTextArea cartTextArea = new JTextArea();
                 //cartTextArea.setBackground(Color.ORANGE);
@@ -304,6 +315,7 @@ public class OnlineShoppingGUI extends JFrame {
 
                 JScrollPane scrollPane = new JScrollPane(cartTable);
                 scrollPane.setPreferredSize(new Dimension(500, 100));
+                scrollPane.setBackground(Color.white);
 
 
                 //newFrame.add(cartScrollPane);
@@ -319,10 +331,12 @@ public class OnlineShoppingGUI extends JFrame {
                 newPanel1.setLayout(new FlowLayout(FlowLayout.TRAILING));
                 //newPanel1.setPreferredSize(new Dimension(20,3));
                 newPanel1.add(new JLabel("Total"));
+                newPanel1.setBackground(Color.white);
 
                 JPanel newPanel2 = new JPanel();
                 newPanel2.setLayout(new FlowLayout(FlowLayout.LEADING));
-                //newPanel2.setPreferredSize(new Dimension(20,5));
+                newPanel2.setBackground(Color.white);
+
 
                 double totalCost = calculateTotalCostFromTable(getCartTableModel());
                 totalCostLabel= new JLabel();
@@ -333,15 +347,14 @@ public class OnlineShoppingGUI extends JFrame {
                 newPanel3.setLayout(new FlowLayout(FlowLayout.TRAILING));
                 //newPanel3.setPreferredSize(new Dimension(20,3));
                 newPanel3.add(new JLabel("First Purchase Discount(10%)"));
+                newPanel3.setBackground(Color.white);
+
 
 
 
                 JPanel newPanel4 = new JPanel();
                 newPanel4.setLayout(new FlowLayout(FlowLayout.LEADING));
-
-
-
-
+                newPanel4.setBackground(Color.white);
 
 
 
@@ -369,13 +382,19 @@ public class OnlineShoppingGUI extends JFrame {
 
 
 
+
+
                 JPanel newPanel5 = new JPanel();
                 newPanel5.setLayout(new FlowLayout(FlowLayout.TRAILING));
                 //newPanel3.setPreferredSize(new Dimension(20,3));
                 newPanel5.add(new JLabel("Three items in same Category Discount(20%)"));
+                newPanel5.setBackground(Color.white);
+
 
                 JPanel newPanel6 = new JPanel();
                 newPanel6.setLayout(new FlowLayout(FlowLayout.LEADING));
+                newPanel6.setBackground(Color.white);
+
 
                 //double three_item_discount = totalCost * 0.20;
 
@@ -394,12 +413,15 @@ public class OnlineShoppingGUI extends JFrame {
                 newPanel7.setLayout(new FlowLayout(FlowLayout.TRAILING));
                 //newPanel3.setPreferredSize(new Dimension(20,3));
                 newPanel7.add(new JLabel("Final Total"));
+                newPanel7.setBackground(Color.white);
+
 
                 JPanel newPanel8 = new JPanel(new FlowLayout(FlowLayout.LEADING));
                 totalWithDiscountLabel=new JLabel(String.valueOf(calculateTotalCost()));
                 newPanel8.add(totalWithDiscountLabel);
+                newPanel8.setBackground(Color.white);
 
-               // saveCartToFile();
+
 
                 addWindowListener(new WindowAdapter() {
                     @Override

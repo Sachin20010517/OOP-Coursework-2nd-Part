@@ -1,8 +1,1 @@
-E|1002E|Home Theatre|10|30000.0|LG|60
-E|1003E|Mouse|10|350.0|Lenavo|4
-E|1003E|Speakers|20|15000.0|Panasonic|60
-C|2001C|Saree|6|2500.0|Yello|L
-C|2003C|Casual Shirts|30|250.0|Green|XL
-E|1001E|12V Battery|12|5000.0|Panasonic|20
-C|20011SAC|Leg Pant|8|3000.0|M|Light
-E|320011ABT|32GB USB DRIVE|50|1000.0|Kingston|52
+E|E001|Laptop|10|999.99|Dell|2
