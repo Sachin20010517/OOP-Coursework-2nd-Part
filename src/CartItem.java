@@ -42,5 +42,5 @@ public class CartItem {
 }
 
 /*Using a separate CartItem class provides a clear structure for handling shopping cart-related
-functionality and allows for better scalability if you decide to add more features to your shopping cart in the future.
+functionality and allows for better scalability if we decide to add more features to your shopping cart in the future.
 It also adheres to the principles of object-oriented design, where each class has a clear responsibility.*/

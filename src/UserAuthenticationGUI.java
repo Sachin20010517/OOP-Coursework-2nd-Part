@@ -41,7 +41,7 @@ public class UserAuthenticationGUI extends JFrame {
         initializeComponents();
 
         JPanel northPanel=new JPanel(new FlowLayout(FlowLayout.CENTER));
-        northPanel.setPreferredSize(new Dimension(400,50));
+        northPanel.setPreferredSize(new Dimension(400,70));
         northPanel.setBackground(Color.white);
         JLabel label_1=new JLabel();
         label_1.setText("Welcome!");
@@ -62,7 +62,7 @@ public class UserAuthenticationGUI extends JFrame {
         usernameField = new JTextField(15);
         usernameField.setPreferredSize(new Dimension(150,20));
 
-        passwordField = new JPasswordField(10);
+        passwordField = new JPasswordField(15);
         signInButton = new JButton("Sign In");
         signInButton.setBackground(Color.lightGray);
         signInButton.setFont(new Font("Times New Roman",Font.BOLD,20));
@@ -106,15 +106,37 @@ public class UserAuthenticationGUI extends JFrame {
         registerPanel.add(registerButton);
         registerPanel.setBackground(Color.white);
 
-        JPanel usernameFieldPanel=new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel usernameFieldPanel=new JPanel(new FlowLayout(FlowLayout.CENTER));
         usernameFieldPanel.add(usernameField);
         //usernameFieldPanel.setPreferredSize(new Dimension(100,30));
-        //usernameFieldPanel.setBackground(Color.white);
+        usernameFieldPanel.setBackground(Color.white);
 
-        mainPanel.add(new JLabel("Username:"));
+
+        JPanel passwordFieldPanel=new JPanel(new FlowLayout(FlowLayout.CENTER));
+        passwordFieldPanel.add(passwordField);
+        passwordFieldPanel.setBackground(Color.white);
+
+
+        JPanel usernameLabelPanel=new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel username = new JLabel("Username:");
+        username.setFont(new Font("Times New Roman",Font.BOLD,17));;
+        usernameLabelPanel.add(username);
+        //usernameFieldPanel.setPreferredSize(new Dimension(100,30));
+        usernameLabelPanel.setBackground(Color.white);
+
+
+        JPanel passwordLabelPanel=new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel password= new JLabel("Password: ");
+        passwordLabelPanel.add(password);
+        passwordLabelPanel.setBackground(Color.white);
+        password.setFont(new Font("Times New Roman",Font.BOLD,17));
+
+
+
+        mainPanel.add(usernameLabelPanel);
         mainPanel.add(usernameFieldPanel);
-        mainPanel.add(new JLabel("Password:"));
-        mainPanel.add(passwordField);
+        mainPanel.add(passwordLabelPanel);
+        mainPanel.add(passwordFieldPanel);
         mainPanel.add(signInPanel);
         mainPanel.add(registerPanel);
 

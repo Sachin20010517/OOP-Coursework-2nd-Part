@@ -7,7 +7,7 @@ public class Main {
         WestminsterShoppingManager manager= new WestminsterShoppingManager();
         //OnlineShoppingGUI gui_1= new OnlineShoppingGUI();
 
-        System.out.println("\n      ---  Welcome to the Westminster Shopping System  ---");
+        System.out.println("\n\n      ---  Welcome to the Westminster Shopping System  ---");
         Scanner input = new Scanner(System.in);
 
         manager.loadProduct();//Loading previous data
@@ -17,15 +17,15 @@ public class Main {
         do{
 
             System.out.println("-----------------------------------------------------------------------------------");
-            System.out.println("Please select an option");
-            System.out.println("1) Add a Product");
-            System.out.println("2) Delete a Product");
-            System.out.println("3) Print the List of the Product");
-            System.out.println("4) Save in a File ");
-            System.out.println("5) Load the file ");
-            System.out.println("6) Switch to GUI");
-            System.out.println("6) Switch to GUI for users");
-            System.out.println("    0) Quit");
+            System.out.println("Please select an option:");
+            System.out.println(" 1) Add a Product");
+            System.out.println(" 2) Delete a Product");
+            System.out.println(" 3) Print the List of the Product");
+            System.out.println(" 4) Save in a File ");
+            System.out.println(" 5) Switch to GUI");
+            System.out.println(" 6) ");
+            System.out.println(" 6) Switch to GUI for users");
+            System.out.println("     0) Quit");
             System.out.println("------------------------------------------------------------------------------------");
             System.out.println();
 
@@ -66,19 +66,16 @@ public class Main {
                     break;
 
                 case 5:
-
+                    ArrayList<Product> arrayListForShopping=manager.runGUI();
+                    ArrayList<User> userList = new ArrayList<>(); // List to hold user details
+                    UserAuthenticationGUI userAuthGUI = new UserAuthenticationGUI(userList,arrayListForShopping);
+                    userAuthGUI.setVisible(true);
 
                     break;
                 case 6:
                     ArrayList<Product> arrayList=manager.runGUI();
                     OnlineShoppingGUI gui_1= new OnlineShoppingGUI(arrayList);
                     gui_1.openWestminsterGUI();
-                    break;
-                case 7:
-                    ArrayList<Product> arrayListForShopping=manager.runGUI();
-                    ArrayList<User> userList = new ArrayList<>(); // List to hold user details
-                    UserAuthenticationGUI userAuthGUI = new UserAuthenticationGUI(userList,arrayListForShopping);
-                    userAuthGUI.setVisible(true);
                     break;
                 case 0:
                     System.out.println("Getting Out of the Online Store. Goodbye!");
@@ -92,11 +89,7 @@ public class Main {
         }while(choice!=0);
 
 
-//        OnlineShoppingGUI newGUI = new OnlineShoppingGUI();
-//        newGUI.setTitle("Westminster Shopping Center");
-//        newGUI.setSize(800,600);
-//        newGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        newGUI.setVisible(true);
+
 
 
     }
@@ -113,12 +106,37 @@ public class Main {
         System.out.print("Product Name: ");
         String productName = scanner.nextLine();
 
-        System.out.print("Available Items: ");
-        int availableItems = scanner.nextInt();
 
-        System.out.print("Price: ");
-        double price = scanner.nextDouble();
+        int availableItems = 0;
+        boolean validAvailableItems = false;
+
+        while (!validAvailableItems) {
+            try {
+                System.out.print("Available Items: ");
+                availableItems = Integer.parseInt(scanner.next());  // Attempt to parse the input as a double
+                validAvailableItems = true;   // If parsing is successful, set the flag to true to exit the loop
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a valid number for the Available Items");
+            }
+        }
+        //scanner.nextLine(); // Consume the newline character .This helps avoid errors when reading the string input later on.
+
+
+
+        double price = 0;
+        boolean validPrice = false;
+
+        while (!validPrice) {
+            try {
+                System.out.print("Price: ");
+                price = Double.parseDouble(scanner.next());  // Attempt to parse the input as a double
+                validPrice = true;   // If parsing is successful, set the flag to true to exit the loop
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a valid number for the price.");
+            }
+        }
         scanner.nextLine(); // Consume the newline character .This helps avoid errors when reading the string input later on.
+
 
         System.out.print("Size: ");
         String size = scanner.next();
@@ -141,12 +159,21 @@ public class Main {
         System.out.print("Product Name: ");
         String productName = scanner.nextLine();
 
-        System.out.print("Available Items: ");
-        int availableItems = scanner.nextInt();
 
-//        System.out.print("Price: ");
-//        double price = scanner.nextDouble();
-//        scanner.nextLine(); // Consume the newline character .This helps avoid errors when reading the string input later on.
+
+        int availableItems = 0;
+        boolean validAvailableItems = false;
+
+        while (!validAvailableItems) {
+            try {
+                System.out.print("Available Items: ");
+                availableItems = Integer.parseInt(scanner.next());  // Attempt to parse the input as an Integer
+                validAvailableItems = true;   // If parsing is successful, set the flag to true to exit the loop
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a valid number for the Available Items");
+            }
+        }
+
 
 
 
@@ -168,8 +195,19 @@ public class Main {
         System.out.print("Brand: ");
         String brand = scanner.nextLine();
 
-        System.out.print("Warranty Period(Years): ");
-        int warrantyPeriod = scanner.nextInt();
+
+        int warrantyPeriod = 0;
+        boolean validWarrantyPeriod = false;
+
+        while (!validWarrantyPeriod) {
+            try {
+                System.out.print("Warranty Period(Weeks): ");
+                warrantyPeriod = Integer.parseInt(scanner.next());  // Attempt to parse the input as an Integer
+                validWarrantyPeriod = true;   // If parsing is successful, set the flag to true to exit the loop
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a valid number for the price.");
+            }
+        }
 
         return new Electronics(productId, productName, availableItems, price, brand, warrantyPeriod);
     }

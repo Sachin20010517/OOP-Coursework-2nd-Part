@@ -21,7 +21,7 @@ public class WestminsterShoppingManager implements ShoppingManager{
     public void addProduct(Product _product) {
         if (product_arrayList.size()<maximumProduct){
             product_arrayList.add(_product);
-            System.out.println("The item has been successfully added to the store.\n");
+            System.out.println("\n  The item has been successfully added to the store!!.\n");
         }
         else {
             System.out.println("--The maximum product limit has been reached. Unable to add additional products--.\n    Try Again Later!\n");
@@ -98,7 +98,7 @@ public class WestminsterShoppingManager implements ShoppingManager{
 
 
 
-    @Override
+
     public void saveProduct() {
         try {
             FileWriter myWriter = new FileWriter("product.txt");
@@ -144,7 +144,7 @@ public class WestminsterShoppingManager implements ShoppingManager{
                     product_arrayList.add(product);
                 }
             }
-            System.out.println("The product list has been successfully loaded!");
+//            System.out.println("The product list has been successfully loaded!");
         }catch (IOException e){
             System.out.println("An error occurred while reading the file.");
             e.printStackTrace();
@@ -152,8 +152,8 @@ public class WestminsterShoppingManager implements ShoppingManager{
 
     }
 
-    private Product textReader(String serializedProduct) {
-        String[] tokens = serializedProduct.split("\\|");
+    private Product textReader(String readProduct) {
+        String[] tokens = readProduct.split("\\|");
         if (tokens.length >= 6) {
             String type = tokens[0];
             String productId = tokens[1];

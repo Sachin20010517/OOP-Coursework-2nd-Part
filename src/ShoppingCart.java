@@ -1,4 +1,5 @@
 import javax.swing.table.DefaultTableModel;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,10 +27,6 @@ public class ShoppingCart {
         shoppingCartList.add(new CartItem(_product,customerName));
     }
 
-    public void removeProduct(Product _product){
-        this.shoppingCartList.remove(_product);
-    }
-
     public double calculateTotalCost(){
         double totalCost  =0;
 
@@ -38,15 +35,6 @@ public class ShoppingCart {
         }
         return totalCost;
     }
-
-//    public void setShoppingCartList(ArrayList<Product> shoppingCartList) {
-//        this.shoppingCartList = shoppingCartList;
-//    }
-//
-//    public ArrayList<Product> getShoppingCartList() {
-//        return shoppingCartList;
-//    }
-
     public ArrayList<CartItem> getCartItems() {
         return shoppingCartList;
     }
@@ -54,9 +42,6 @@ public class ShoppingCart {
     public int getElectronicQuantity() {
         int electronicQuantity = 0;
         for (CartItem item : shoppingCartList) {
-//            if ("Electronic".equals(item.getProduct().getProductType())) {
-//                electronicQuantity += item.getQuantity();
-//            }
             if (item.getProduct().getProductType().equals("Electronic")){
                 electronicQuantity += item.getQuantity();
             }
@@ -67,9 +52,6 @@ public class ShoppingCart {
     public int getClothingQuantity() {
         int clothingQuantity = 0;
         for (CartItem item : shoppingCartList) {
-//            if ("Clothing".equals(item.getProduct().getProductType())) {
-//                clothingQuantity += item.getQuantity();
-//            }
             if (item.getProduct().getProductType().equals("Clothing")){
                 clothingQuantity += item.getQuantity();
             }
@@ -80,21 +62,19 @@ public class ShoppingCart {
 
 
 
-    public DefaultTableModel getTableModel() {
+    public DefaultTableModel getCartTableModel() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Product");
         model.addColumn("Category");
         model.addColumn("Quantity");
         model.addColumn("Price($)");
-       // model.addColumn("Info");
 
         for (CartItem item : shoppingCartList) {
             Object[] rowData = {
-                    "      "+item.getProduct().getProductId()+", "+item.getProduct().getProductName(),
+                    "      " + item.getProduct().getProductId() + ", " + item.getProduct().getProductName(),
                     item.getProduct().getProductType(),
                     item.getQuantity(),
                     item.getTotalPrice()
-                    //item.getNumberOfAvailableItem()
             };
             model.addRow(rowData);
         }
@@ -102,7 +82,10 @@ public class ShoppingCart {
         return model;
     }
 
-    public void saveCartToFile(String fileName) {
+// ...
+
+    public void saveCartToFile() {
+        String fileName = "cart.txt"; // Default file name
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
             for (CartItem item : shoppingCartList) {
                 writer.println("Customer: " + item.getCustomerName());
@@ -111,12 +94,27 @@ public class ShoppingCart {
                 writer.println("Total Price: " + item.getTotalPrice());
                 writer.println("--------------------");
             }
-            System.out.println("Shopping cart saved to " + fileName);
+            // System.out.println("Shopping cart saved to " + fileName);
         } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Error saving shopping cart to file: " + e.getMessage());
+            // If the file doesn't exist, create it and try saving again
+            try {
+                File file = new File(fileName);
+                if (file.createNewFile()) {
+                    // System.out.println("File created: " + fileName);
+                    // Retry saving after file creation
+                    saveCartToFile();
+                } else {
+                    // System.err.println("Error creating file: " + fileName);
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                // System.err.println("Error creating file: " + ex.getMessage());
+            }
         }
     }
 
 
+
 }
+
+
