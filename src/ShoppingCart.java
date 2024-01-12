@@ -84,34 +84,34 @@ public class ShoppingCart {
 
 // ...
 
-    public void saveCartToFile() {
-        String fileName = "cart.txt"; // Default file name
-        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
-            for (CartItem item : shoppingCartList) {
-                writer.println("Customer: " + item.getCustomerName());
-                writer.println("Product: " + item.getProduct().getProductName());
-                writer.println("Quantity: " + item.getQuantity());
-                writer.println("Total Price: " + item.getTotalPrice());
-                writer.println("--------------------");
-            }
-            // System.out.println("Shopping cart saved to " + fileName);
-        } catch (IOException e) {
-            // If the file doesn't exist, create it and try saving again
-            try {
-                File file = new File(fileName);
-                if (file.createNewFile()) {
-                    // System.out.println("File created: " + fileName);
-                    // Retry saving after file creation
-                    saveCartToFile();
-                } else {
-                    // System.err.println("Error creating file: " + fileName);
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                // System.err.println("Error creating file: " + ex.getMessage());
-            }
-        }
-    }
+//    public void saveCartToFile() {
+//        String fileName = "cart.txt"; // Default file name
+//        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
+//            for (CartItem item : shoppingCartList) {
+//                writer.println("Customer: " + item.getCustomerName());
+//                writer.println("Product: " + item.getProduct().getProductName());
+//                writer.println("Quantity: " + item.getQuantity());
+//                writer.println("Total Price: " + item.getTotalPrice());
+//                writer.println("--------------------");
+//            }
+//            // System.out.println("Shopping cart saved to " + fileName);
+//        } catch (IOException e) {
+//            // If the file doesn't exist, create it and try saving again
+//            try {
+//                File file = new File(fileName);
+//                if (file.createNewFile()) {
+//                    // System.out.println("File created: " + fileName);
+//                    // Retry saving after file creation
+//                    saveCartToFile();
+//                } else {
+//                    // System.err.println("Error creating file: " + fileName);
+//                }
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//                // System.err.println("Error creating file: " + ex.getMessage());
+//            }
+//        }
+//    }
 
 
 

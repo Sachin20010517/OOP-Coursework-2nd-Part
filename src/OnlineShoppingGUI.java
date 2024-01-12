@@ -3,9 +3,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -348,7 +346,7 @@ public class OnlineShoppingGUI extends JFrame {
 
 
 
-                // Check if it's the customer's first purchase
+                 //Check if it's the customer's first purchase
                 UserAuthenticationGUI currentUser =new UserAuthenticationGUI();
                 String customerName = currentUser.sendUserName();
                 boolean isFirstPurchase = isCustomerFirstPurchase(customerName);
@@ -356,17 +354,16 @@ public class OnlineShoppingGUI extends JFrame {
                 if (isFirstPurchase) {
                     // Apply the 10% bonus for the first purchase
                     discount += totalCost * 0.10;
-
+//                    newPanel4.add(new JLabel("-" + discount +"£"));
                     // Save the cart information to a text file
-                    saveCartToFile();
-                    newPanel4.add(new JLabel("-" + discount +isFirstPurchase+ "£"));
+                    //saveCartToFile();
                 }
                 else {
-                    saveCartToFile();
-                    newPanel4.add(new JLabel("-"  + "0.00£"));
+                    //saveCartToFile();
+                    discount=0;
                 }
 
-                firstPurchaseDiscountLabel=new JLabel();
+                firstPurchaseDiscountLabel=new JLabel(""+discount+"0.00£");
                 newPanel4.add(firstPurchaseDiscountLabel);
 
 
@@ -382,7 +379,7 @@ public class OnlineShoppingGUI extends JFrame {
 
                 //double three_item_discount = totalCost * 0.20;
 
-                threeItemDiscountLabel=new JLabel();
+                threeItemDiscountLabel=new JLabel("0.00£");
                 newPanel6.add(threeItemDiscountLabel);
 //
 //                if (getClothingQuantity() >= 3 || getElectronicQuantity() >= 3) {
@@ -396,11 +393,21 @@ public class OnlineShoppingGUI extends JFrame {
                 JPanel newPanel7 = new JPanel();
                 newPanel7.setLayout(new FlowLayout(FlowLayout.TRAILING));
                 //newPanel3.setPreferredSize(new Dimension(20,3));
-                newPanel7.add(new JLabel("Total"));
+                newPanel7.add(new JLabel("Final Total"));
 
                 JPanel newPanel8 = new JPanel(new FlowLayout(FlowLayout.LEADING));
-                totalWithDiscountLabel=new JLabel();
+                totalWithDiscountLabel=new JLabel(String.valueOf(calculateTotalCost()));
                 newPanel8.add(totalWithDiscountLabel);
+
+               // saveCartToFile();
+
+                addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        // Save cart details when the cart frame is closed
+                        saveCartToFile();
+                    }
+                });
 
 
 
@@ -524,6 +531,36 @@ public class OnlineShoppingGUI extends JFrame {
 
 
         }
+
+        private void saveCartToFile() {
+            String fileName = "cart.txt";
+            try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
+                DefaultTableModel cartTableModel = (DefaultTableModel) cartTable.getModel();
+
+                for (int row = 0; row < cartTableModel.getRowCount(); row++) {
+                    String _Product = (String) cartTableModel.getValueAt(row, 0);
+                    String productName = (String) cartTableModel.getValueAt(row, 1);
+                    int quantity = (int) cartTableModel.getValueAt(row, 2);
+                    double totalPrice = (double) cartTableModel.getValueAt(row, 3);
+
+//                    writer.println("Customer: " + customerName);
+//                    writer.println("Product: " + productName);
+//                    writer.println("Quantity: " + quantity);
+//                    writer.println("Total Price: " + totalPrice);
+//                    writer.println("--------------------");
+
+                    writer.println("Customer: " + customerName);
+                    writer.println("Product: " + _Product);
+                    writer.println("Quantity: " + quantity);
+                    writer.println("Total Price: " + totalPrice);
+                    writer.println("--------------------");
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                System.err.println("Error saving shopping cart to " + fileName);
+            }
+        }
+
 
         @Override
         public void mousePressed(MouseEvent e) {
@@ -701,15 +738,15 @@ public class OnlineShoppingGUI extends JFrame {
         if (totalCostLabel != null) {
             totalCostLabel.setText("" + totalCost + " £");
         }
-//        if (firstPurchaseDiscountLabel != null) {
-//            if (isFirstPurchase){
-//                firstPurchaseDiscountLabel.setText("" + totalCost*0.10 + " £");
-//            }
-//            else {
-//                firstPurchaseDiscountLabel.setText("0.00£");
-//            }
-//
-//        }
+        if (firstPurchaseDiscountLabel != null) {
+            if (isFirstPurchase){
+                firstPurchaseDiscountLabel.setText("" + totalCost*0.10 + " £");
+            }
+            else {
+                firstPurchaseDiscountLabel.setText("0.00£");
+            }
+
+        }
         // Update three item discount label
         double threeItemDiscount = (clothingQuantity >= 3 || electronicQuantity >= 3) ? totalCost * 0.20 : 0.0;
         if (threeItemDiscountLabel != null) {
